@@ -1,0 +1,203 @@
+@font-face {
+    font-family: 'Spongeboy Me Bob';
+    src: url('/spongeboy-me-bob.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+html,
+body {
+    font-family: "Spongeboy Me Bob", sans-serif;
+    @apply text-neutral-content;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    background-color: #1d1d1d;
+    background-image: url('/back.jpeg');
+    background-blend-mode: overlay;
+    background-size: cover;
+    background-position: center;
+}
+
+/* Mobile responsive utilities */
+@media (max-width: 768px) {
+    .mobile-hidden {
+        display: none !important;
+    }
+
+    .mobile-text-sm {
+        font-size: 0.875rem !important;
+    }
+
+    .mobile-text-xs {
+        font-size: 0.75rem !important;
+    }
+
+    .mobile-p-4 {
+        padding: 1rem !important;
+    }
+
+    .mobile-p-2 {
+        padding: 0.5rem !important;
+    }
+
+    .mobile-gap-2 {
+        gap: 0.5rem !important;
+    }
+
+    .mobile-h-auto {
+        height: auto !important;
+    }
+
+    .mobile-flex-col {
+        flex-direction: column !important;
+    }
+
+    .mobile-text-center {
+        text-align: center !important;
+    }
+
+    .mobile-space-y-2>*+* {
+        margin-top: 0.5rem !important;
+    }
+}
+
+/* Loading animations */
+.section-hidden {
+    opacity: 0;
+    transform: translateY(60px) scale(0.95);
+    transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.section-visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.section-fade-in {
+    animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(60px) scale(0.95);
+    }
+
+    50% {
+        opacity: 0.6;
+        transform: translateY(20px) scale(0.98);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Loading screen animations */
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+/* Smooth scroll behavior */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Chromatic Theme Utilities */
+@keyframes chromatic-shift {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.chromatic-bg {
+    background: linear-gradient(270deg,
+            #ff0080,
+            #ff8c00,
+            #40e0d0,
+            #8a2be2,
+            #ff0080);
+    background-size: 300% 300%;
+    animation: chromatic-shift 6s ease infinite;
+}
+
+.btn-glass {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    color: white !important;
+    transition: all 0.3s ease;
+}
+
+.btn-glass:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.4) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
+}
+
+.liquid-glass {
+    background: rgba(10, 14, 20, 0.4) !important;
+    backdrop-filter: blur(12px) saturate(150%) !important;
+    -webkit-backdrop-filter: blur(12px) saturate(150%) !important;
+    box-shadow:
+        inset 0 1px 1px rgba(255, 255, 255, 0.15),
+        inset 0 -1px 10px rgba(255, 255, 255, 0.02),
+        0 4px 20px rgba(0, 0, 0, 0.3) !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+.chromatic-edge {
+    position: relative;
+}
+
+.chromatic-edge::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(270deg,
+            rgba(0, 255, 255, 0.5),
+            rgba(255, 120, 0, 0.5),
+            rgba(255, 0, 128, 0.5),
+            rgba(100, 255, 0, 0.5));
+    background-size: 300% 300%;
+    animation: chromatic-shift 8s ease infinite;
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    mix-blend-mode: screen;
+}
