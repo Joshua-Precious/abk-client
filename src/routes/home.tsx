@@ -15,7 +15,7 @@ export default function Home() {
             <Header />
 
             {/* Main Content */}
-            <main className="pt-24 md:pt-28 flex-grow relative z-10">
+            <main className="flex-grow relative z-10">
                 <HeroSection />
                 <TrailerSection />
                 <CountdownSection />

@@ -16,10 +16,10 @@ export default function Header() {
     const currentPage = location.pathname;
 
     const navItems = [
-        { label: 'Home', path: '/', action: navigateToHome },
-        { label: 'About', path: '/about', action: navigateToAbout },
-        { label: 'Merch', path: '#', action: () => { } },
-        { label: 'FAQs', path: '/faq', action: navigateToFAQ },
+        { label: 'HOME', path: '/', action: navigateToHome },
+        { label: 'ABOUT', path: '/about', action: navigateToAbout },
+        { label: 'MERCH', path: '#', action: () => { } },
+        { label: 'FAQS', path: '/faq', action: navigateToFAQ },
     ];
 
     return (
@@ -46,9 +46,10 @@ export default function Header() {
                 </div>
 
                 <div className="flex items-center space-x-3">
+                    {/* Hide the top Register text on mobile to fix layout (since it's already in the menu) */}
                     <button
                         onClick={navigateToRegister}
-                        className="cursor-pointer font-bold px-6 py-2.5 text-xl"
+                        className="hidden md:block cursor-pointer font-bold px-6 py-2.5 text-xl"
                     >
                         REGISTER
                     </button>
@@ -83,7 +84,7 @@ export default function Header() {
                     </div>
                     <button
                         onClick={navigateToRegister}
-                        className="w-full max-w-[200px] py-2.5 rounded-full btn-glass font-bold text-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 mt-2"
+                        className="w-full max-w-[200px] pt-3.5 pb-2 rounded-full btn-glass font-bold text-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 mt-2 flex items-center justify-center leading-none"
                     >
                         REGISTER
                     </button>

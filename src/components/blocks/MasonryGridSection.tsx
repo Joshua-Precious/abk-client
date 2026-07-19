@@ -27,6 +27,7 @@ export default function MasonryGridSection() {
                             <img
                                 src={img.src}
                                 alt={`Gallery image ${index + 1}`}
+                                loading="lazy"
                                 className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-700"
                             />
                         </div>

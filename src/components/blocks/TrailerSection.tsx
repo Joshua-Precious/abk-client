@@ -47,9 +47,9 @@ export default function TrailerSection() {
     };
 
     return (
-        <section className="h-full py-8 md:py-16">
-            <div className="relative container mx-auto w-full overflow-hidden ">
-                <div className="aspect-video  flex flex-col items-center justify-center relative group overflow-hidden">
+        <section className="h-[40dvh] md:h-auto md:py-16 w-full">
+            <div className="relative w-full h-full md:container md:mx-auto overflow-hidden">
+                <div className="w-full h-full md:aspect-video flex flex-col items-center justify-center relative group overflow-hidden">
 
                     {/* The Video Element chunked streaming via preload="metadata" */}
                     <video

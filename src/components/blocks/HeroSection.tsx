@@ -1,12 +1,18 @@
 
 export default function HeroSection() {
     return (
-        <div className="relative w-full flex items-center justify-center py6 md:py-18">
-            <div className="relative z-10 w-full max-w-5xl mx-auto px-4 text-center">
-                <div className="liquid-glass chromatic-edge rounded-3xl p-8 md:p-16 shadow-2xl flex items-center justify-center">
-                    <img src="/assets/lockUp.png" alt="ABK" className="w-[80%] max-w-lg mx-auto filter drop-shadow-[0_0_30px_rgba(255,255,255,0.2)]" />
-                </div>
-            </div>
+        <div className="relative w-full h-[60dvh] md:h-[100dvh] flex items-center justify-center overflow-hidden">
+            {/* Background Video */}
+            <video 
+                autoPlay 
+                muted 
+                loop 
+                playsInline
+                poster="/assets/lockUp.png"
+                className="absolute inset-0 w-full h-full object-cover z-0"
+            >
+                <source src="https://pub-5f67caa8563f429a9f86a1fe1513d9f6.r2.dev/Video/IMG_0552.MP4" type="video/mp4" />
+            </video>
         </div>
     );
 }
