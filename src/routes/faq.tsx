@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Header from "../components/blocks/Header";
 import SocialMediaFooter from "../components/blocks/Footer";
 import GlassyContainer from "../components/ui/GlassyContainer";
