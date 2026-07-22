@@ -39,7 +39,8 @@ export default function AdminDashboard() {
             setIsLoading(true);
             try {
                 const token = localStorage.getItem("admin_token");
-                const response = await fetch("http://localhost:3000/api/registrations", {
+                const API_URL = import.meta.env.VITE_API_URL;
+                const response = await fetch(`${API_URL}/api/registrations`, {
                     headers: {
                         "Authorization": `Bearer ${token}`
                     }
@@ -79,7 +80,8 @@ export default function AdminDashboard() {
         setLoginError("");
 
         try {
-            const response = await fetch("http://localhost:3000/api/admin/login", {
+            const API_URL = import.meta.env.VITE_API_URL;
+            const response = await fetch(`${API_URL}/api/admin/login`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, password })
