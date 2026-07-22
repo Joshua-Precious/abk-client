@@ -1,9 +1,8 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Icon } from "@iconify/react";
 import GlassyCard from "../ui/GlassyCard";
 
 export default function RegistrationForm() {
-  // Form state
   const [formData, setFormData] = useState({
     teamName: "",
     numberOfPeople: "",
@@ -17,7 +16,8 @@ export default function RegistrationForm() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState("");
-  const [submitStatus, setSubmitStatus] = useState(""); // 'success' or 'error'
+  const [submitStatus, setSubmitStatus] = useState("");
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -102,11 +102,7 @@ export default function RegistrationForm() {
         city: "",
       });
 
-      setMessageWithTimeout(
-        "Registration submitted successfully!",
-        "success",
-        5000,
-      );
+      setShowSuccessModal(true);
     } catch (error: any) {
       console.error("Registration error:", error);
       let errorMessage = "Registration failed. Please try again.";
@@ -336,6 +332,44 @@ export default function RegistrationForm() {
           </form>
         </GlassyCard>
       </div>
+      {showSuccessModal && (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4"
+          onClick={() => setShowSuccessModal(false)}
+        >
+          <div
+            className="relative max-w-md w-full liquid-glass rounded-3xl border border-white/10 p-8 md:p-12 text-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="w-20 h-20 rounded-full bg-green-500/20 border border-green-500/40 flex items-center justify-center mx-auto mb-6">
+              <Icon icon="lucide:check" className="w-10 h-10 text-green-400" />
+            </div>
+
+            <h2 className="text-3xl md:text-4xl font-bold text-[#f0b405] tracking-wider uppercase mb-4">
+              Registration Submitted!
+            </h2>
+
+            <p className="text-white/80 text-lg leading-relaxed mb-8">
+              Check your email inbox for a confirmation link to complete your
+              team's registration.
+            </p>
+
+            <div className="bg-white/5 rounded-xl p-4 mb-8 border border-white/10">
+              <p className="text-white/60 text-sm flex items-center justify-center gap-2">
+                <Icon icon="lucide:mail" className="w-4 h-4 text-[#f0b405]" />
+                Don't forget to check your spam folder
+              </p>
+            </div>
+
+            <button
+              onClick={() => setShowSuccessModal(false)}
+              className="px-8 py-3 rounded-xl font-bold text-[#00060e] bg-[#f0b405] hover:bg-[#f0b405]/90 transition-colors uppercase tracking-wider"
+            >
+              Got it
+            </button>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
