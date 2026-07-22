@@ -1,4 +1,8 @@
+import { useState } from "react";
+
 export default function MasonryGridSection() {
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
   const images = [
     // Original 6 images (Rows 1-2)
     {
@@ -53,16 +57,45 @@ export default function MasonryGridSection() {
               key={index}
               className={`relative group overflow-hidden border border-white/10 ${img.span}`}
             >
-              <img
-                src={img.src}
-                alt={`Gallery image ${index + 1}`}
-                loading="lazy"
-                className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-700"
-              />
+              <button
+                onClick={() => setSelectedImage(img.src)}
+                className="w-full h-full block cursor-pointer"
+                aria-label={`Open gallery image ${index + 1}`}
+              >
+                <img
+                  src={img.src}
+                  alt={`Gallery image ${index + 1}`}
+                  loading="lazy"
+                  className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-700"
+                />
+              </button>
             </div>
           ))}
         </div>
       </div>
+
+      {selectedImage && (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
+          onClick={() => setSelectedImage(null)}
+        >
+          <button
+            onClick={() => setSelectedImage(null)}
+            className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors text-white"
+            aria-label="Close"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+          <img
+            src={selectedImage}
+            alt="Gallery preview"
+            className="max-w-full max-h-[90vh] object-contain rounded-2xl shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          />
+        </div>
+      )}
     </section>
   );
 }

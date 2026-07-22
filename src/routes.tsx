@@ -7,6 +7,7 @@ import FAQ from "./routes/faq";
 import About from "./routes/about";
 import Merch from "./routes/merch";
 import Vendors from "./routes/vendors";
+import ConfirmRegistration from "./routes/confirm";
 
 export default function AppRoutes() {
   return (
@@ -17,6 +18,7 @@ export default function AppRoutes() {
       <Route path="/merch" element={<Merch />} />
       <Route path="/vendors" element={<Vendors />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/confirm-registration" element={<ConfirmRegistration />} />
       <Route path="/admin" element={<AdminDashboard />} />
       <Route path="/faq" element={<FAQ />} />
     </Routes>

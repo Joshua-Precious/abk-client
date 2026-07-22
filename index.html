@@ -2,16 +2,70 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="theme-color" content="#FF0000" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <title>Accras Boogie King '26</title>
     <link
       rel="preconnect"
       href="https://pub-5f67caa8563f429a9f86a1fe1513d9f6.r2.dev"
     />
     <link rel="icon" type="image/webp" href="/assets/monogram.webp" />
+    <style>
+      /* Portrait-only lock overlay for mobile landscape */
+      #rotate-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 99999;
+        background: #0f0f13;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+        font-family: sans-serif;
+        color: white;
+        text-align: center;
+        padding: 24px;
+      }
+      #rotate-overlay .rotate-icon {
+        font-size: 64px;
+        animation: rotate-hint 1.5s ease-in-out infinite;
+      }
+      #rotate-overlay h2 {
+        font-size: 1.25rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: #f0b405;
+        margin: 0;
+      }
+      #rotate-overlay p {
+        font-size: 0.875rem;
+        color: rgba(255,255,255,0.6);
+        margin: 0;
+      }
+      @keyframes rotate-hint {
+        0%, 100% { transform: rotate(0deg); }
+        50% { transform: rotate(-90deg); }
+      }
+      /* Show only on mobile landscape */
+      @media screen and (max-width: 900px) and (orientation: landscape) {
+        #rotate-overlay {
+          display: flex;
+        }
+      }
+    </style>
   </head>
 
   <body>
+    <!-- Landscape lock overlay -->
+    <div id="rotate-overlay">
+      <div class="rotate-icon">📱</div>
+      <h2>Rotate Your Device</h2>
+      <p>ABK is best experienced in portrait mode</p>
+    </div>
     <div id="root"></div>
     <script type="module" src="/src/root.tsx"></script>
   </body>
