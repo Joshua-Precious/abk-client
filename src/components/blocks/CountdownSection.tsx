@@ -45,11 +45,8 @@ export default function CountdownSection() {
       <div className="max-w-6xl mx-auto flex flex-col items-center gap-8 w-full text-center">
         <div className="grid grid-cols-4 gap-2 sm:gap-4 md:gap-8 w-full max-w-[100vw] overflow-hidden">
           {timeBlocks.map((block, index) => (
-            <div
-              key={index}
-              className="liquid-glass chromatic-edge rounded-xl md:rounded-2xl"
-            >
-              <div className="bg-black/40 backdrop-blur-md rounded-lg md:rounded-xl py-4 px-1 sm:py-6 sm:px-4 md:py-8 md:px-12 flex flex-col items-center justify-center border border-white/5 h-full">
+            <div key={index} className="">
+              <div className="flex flex-col items-center justify-center h-full">
                 <span className="text-2xl sm:text-4xl md:text-7xl p-1 md:p-2 font-black text-white drop-shadow-md">
                   {String(block.value).padStart(2, "0")}
                 </span>
@@ -60,7 +57,12 @@ export default function CountdownSection() {
             </div>
           ))}
         </div>
-        <span className="text-white text-2xl font-bold uppercase">
+        <span className="mx-auto flex w-full max-w-xs flex-col items-center justify-center gap-2 text-center text-white text-2xl font-bold uppercase sm:max-w-none sm:w-fit sm:flex-row sm:gap-3">
+          <img
+            src="/Calendar.webp"
+            alt="Calendar"
+            className="h-14 w-14 shrink-0 object-contain md:h-24 md:w-24"
+          />
           25th September, 2026
         </span>
       </div>

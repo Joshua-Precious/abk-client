@@ -23,13 +23,17 @@ export default function Header() {
     navigate("/about");
     setIsMobileMenuOpen(false);
   };
+  const navigateToMerch = () => {
+    navigate("/merch");
+    setIsMobileMenuOpen(false);
+  };
 
   const currentPage = location.pathname;
 
   const navItems = [
     { label: "HOME", path: "/", action: navigateToHome },
     { label: "ABOUT", path: "/about", action: navigateToAbout },
-    { label: "MERCH", path: "#", action: () => {} },
+    { label: "MERCH", path: "/merch", action: navigateToMerch },
     { label: "FAQS", path: "/faq", action: navigateToFAQ },
   ];
 
@@ -61,12 +65,15 @@ export default function Header() {
           ))}
         </div>
 
-        <div className="flex items-centerjustify-center gap-4">
+        <div className="flex items-center gap-4">
           <button
             onClick={navigateToRegister}
-            className="cursor-pointer textmd font-bold text-white pt-2 transition-all duration-300 hover:bg-white/15 hover:scale-[1.02] active:scale-[0.98] md:px-6 md:py-2.5 md:text-xl"
+            className="flex cursor-pointer flex-col gap-1 items-center justify-center rounded-md border-2 border-white bg-[linear-gradient(180deg,#ff3b00_0%,#ff1f5b_35%,#7a2cff_100%)] px-4 py-2 text-center text-sm font-extrabold uppercase leading-none text-white shadow-[0_0_18px_rgba(255,255,255,0.22),inset_0_1px_0_rgba(255,255,255,0.45)] transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_22px_rgba(255,255,255,0.28),inset_0_1px_0_rgba(255,255,255,0.55)] active:scale-[0.98] md:px-5 md:py-2 md:text-sm"
           >
-            REGISTER
+            <span className="block">REGISTER</span>
+            <span className="block text-[0.95em] tracking-[0.18em]">
+              A TEAM
+            </span>
           </button>
 
           {/* Mobile Menu Toggle */}
@@ -103,9 +110,12 @@ export default function Header() {
           </div>
           <button
             onClick={navigateToRegister}
-            className="w-full max-w-[200px] pt-3.5 pb-2 rounded-full btn-glass font-bold text-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 mt-2 flex items-center justify-center leading-none"
+            className="mt-2 flex w-full max-w-50 flex-col items-center justify-center rounded-md border-2 border-[#FFF59D] bg-[linear-gradient(180deg,#ff3b00_0%,#ff1f5b_35%,#7a2cff_100%)] px-4 py-3 text-center font-extrabold uppercase leading-none text-white shadow-[0_0_18px_rgba(255,255,255,0.22),inset_0_1px_0_rgba(255,255,255,0.45)] transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_22px_rgba(255,255,255,0.28),inset_0_1px_0_rgba(255,255,255,0.55)] active:scale-[0.98] text-sm"
           >
-            REGISTER
+            <span className="block">REGISTER</span>
+            <span className="block text-[0.95em] tracking-[0.18em]">
+              A TEAM
+            </span>
           </button>
         </div>
       )}

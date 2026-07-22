@@ -5,16 +5,18 @@ import Register from "./routes/register";
 import AdminDashboard from "./routes/admin";
 import FAQ from "./routes/faq";
 import About from "./routes/about";
+import Merch from "./routes/merch";
 
 export default function AppRoutes() {
-    return (
-        <Routes>
-            <Route index element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/gallery" element={<Gallery />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/admin" element={<AdminDashboard />} />
-            <Route path="/faq" element={<FAQ />} />
-        </Routes>
-    );
+  return (
+    <Routes>
+      <Route index element={<Home />} />
+      <Route path="/about" element={<About />} />
+      <Route path="/gallery" element={<Gallery />} />
+      <Route path="/merch" element={<Merch />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/admin" element={<AdminDashboard />} />
+      <Route path="/faq" element={<FAQ />} />
+    </Routes>
+  );
 }

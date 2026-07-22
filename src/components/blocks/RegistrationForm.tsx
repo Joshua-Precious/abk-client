@@ -89,174 +89,167 @@ export default function RegistrationForm() {
     };
 
     return (
-        <section id="register-section" className="relative py-12 px-4 flex justify-center items-center">
+        <section id="register-section" className="relative py-8 px-4 flex justify-center items-start min-h-screen">
+            {/* Outer decorative background label */}
+            <div className="absolute top-10 left-1/2 -translate-x-1/2 z-0 text-center pointer-events-none">
+                <p className="text-white/10 font-black text-[8rem] md:text-[12rem] leading-none tracking-tighter select-none uppercase">
+                    REGISTER
+                </p>
+            </div>
 
-            {/* SVG Filter for the Paper Edge Effect */}
-            <svg className="absolute w-0 h-0" style={{ pointerEvents: 'none' }}>
-                <defs>
-                    <filter id="paper-edge" x="-10%" y="-10%" width="120%" height="120%">
-                        <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="3" result="noise" />
-                        <feDisplacementMap in="SourceGraphic" in2="noise" scale="12" xChannelSelector="R" yChannelSelector="G" />
-                    </filter>
-                </defs>
-            </svg>
+            <div className="relative w-full max-w-xl mx-auto z-10 mt-4">
 
-            <div className="relative w-full max-w-4xl mx-auto drop-shadow-2xl">
+                {/* === PAPER LAYER === */}
+                <div className="relative">
+                    {/* The paper image — sets the natural shape */}
+                    <img
+                        src="/paper.png"
+                        alt=""
+                        aria-hidden="true"
+                        className="w-full h-auto block"
+                    />
 
-                {/* The Dark Paper Background */}
-                <div
-                    className="absolute inset-0 bg-[#121212] shadow-[inset_0_0_40px_rgba(0,0,0,0.8)]"
-                    style={{ filter: "url(#paper-edge)" }}
-                >
-                    {/* Faint notebook lines for dark mode aesthetic */}
-                    <div className="absolute inset-0 opacity-10" style={{
-                        backgroundImage: 'repeating-linear-gradient(transparent, transparent 31px, #ffffff 31px, #ffffff 32px)',
-                        backgroundPosition: '0 40px'
-                    }}></div>
-                </div>
+                    {/* Form content overlaid on top of the white paper area */}
+                    {/* The paper image is ~500x580px with ~10% margin on each side */}
+                    <div className="absolute inset-0 flex flex-col items-center justify-center"
+                        style={{ padding: '12% 14% 14% 14%' }}>
 
-                {/* Form Content - positioned over the paper */}
-                <div className="relative z-10 p-8 md:p-14 text-white/90">
-
-                    <div className="text-center mb-10 transform -rotate-2">
-                        <h1 className="font-bold text-5xl md:text-6xl tracking-wider inline-block border-b-4 border-white/20 pb-2 text-white">
-                            REGISTER
-                        </h1>
-                        <p className="text-white/60 mt-4 text-xl font-medium">Join the ultimate showdown!</p>
-                    </div>
-
-                    {submitMessage && (
-                        <div className={`mb-8 p-4 rounded-lg text-center font-bold text-lg transform rotate-1 ${submitStatus === 'success'
-                            ? 'bg-green-900/40 text-green-300 border-2 border-green-500/50 border-dashed'
-                            : 'bg-red-900/40 text-red-300 border-2 border-red-500/50 border-dashed'
-                            }`}>
-                            {submitMessage}
+                        {/* Title block */}
+                        <div className="w-full text-center mb-4">
+                            <div className="inline-block bg-[#ff0000] text-white font-black text-xs tracking-[0.3em] uppercase px-3 py-1 rotate-[-1deg] mb-2 shadow-sm">
+                                Accra's Boogie King 2026
+                            </div>
+                            <h1 className="font-black text-3xl sm:text-4xl text-slate-900 leading-none tracking-wider rotate-[-1deg] inline-block">
+                                REGISTER
+                            </h1>
+                            <p className="text-slate-500 text-xs sm:text-sm font-medium mt-1">Fill in the form below to enter your team</p>
+                            <div className="w-16 h-[2px] bg-slate-400 mx-auto mt-2"></div>
                         </div>
-                    )}
 
-                    <form onSubmit={handleSubmit} className="space-y-10">
+                        {/* Status message */}
+                        {submitMessage && (
+                            <div className={`w-full mb-3 px-3 py-2 rounded text-center font-bold text-xs rotate-[0.5deg] ${
+                                submitStatus === 'success'
+                                    ? 'bg-green-100 text-green-900 border border-green-400 border-dashed'
+                                    : 'bg-red-100 text-red-900 border border-red-400 border-dashed'
+                            }`}>
+                                {submitMessage}
+                            </div>
+                        )}
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
+                        {/* Form — single column compact layout */}
+                        <form onSubmit={handleSubmit} className="w-full space-y-3">
 
-                            {/* Audition Details */}
-                            <div className="space-y-6">
-                                <h2 className="text-2xl font-bold border-b-2 border-dashed border-white/20 pb-2 transform -rotate-1 text-white inline-block">
-                                    Audition Details
-                                </h2>
-
-                                <div className="space-y-5">
-                                    <div className="relative group">
-                                        <label className="text-sm font-bold text-white/70 mb-1 block">Team Name *</label>
+                            {/* Section: Team Info */}
+                            <div>
+                                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 border-b border-dashed border-slate-300 pb-[2px] mb-2">
+                                    — Team Info —
+                                </p>
+                                <div className="grid grid-cols-2 gap-x-3 gap-y-3">
+                                    <div>
+                                        <label className="block text-[10px] font-black text-slate-600 uppercase tracking-widest mb-[2px]">Team Name *</label>
                                         <input
                                             type="text" name="teamName" value={formData.teamName} onChange={handleInputChange} required
-                                            className="w-full bg-transparent border-b-2 border-white/20 px-2 py-2 text-xl text-white placeholder-white/30 focus:outline-none focus:border-white/60 transition-colors"
-                                            placeholder="The Dancing Stars"
+                                            className="w-full bg-transparent border-b-2 border-slate-400 py-1 text-sm font-bold text-slate-900 placeholder-slate-400 focus:outline-none focus:border-red-500 transition-colors"
+                                            placeholder="Team name..."
                                         />
                                     </div>
-
-                                    <div className="relative group">
-                                        <label className="text-sm font-bold text-white/70 mb-1 block">Number of People *</label>
+                                    <div>
+                                        <label className="block text-[10px] font-black text-slate-600 uppercase tracking-widest mb-[2px]">No. of People *</label>
                                         <input
                                             type="number" name="numberOfPeople" value={formData.numberOfPeople} onChange={handleInputChange} required min="1"
-                                            className="w-full bg-transparent border-b-2 border-white/20 px-2 py-2 text-xl text-white placeholder-white/30 focus:outline-none focus:border-white/60 transition-colors"
-                                            placeholder="5"
+                                            className="w-full bg-transparent border-b-2 border-slate-400 py-1 text-sm font-bold text-slate-900 placeholder-slate-400 focus:outline-none focus:border-red-500 transition-colors"
+                                            placeholder="e.g. 5"
                                         />
                                     </div>
-
-                                    <div className="relative group">
-                                        <label className="text-sm font-bold text-white/70 mb-1 block">Age Range *</label>
+                                    <div>
+                                        <label className="block text-[10px] font-black text-slate-600 uppercase tracking-widest mb-[2px]">Age Range *</label>
                                         <input
                                             type="text" name="ageRange" value={formData.ageRange} onChange={handleInputChange} required
-                                            className="w-full bg-transparent border-b-2 border-white/20 px-2 py-2 text-xl text-white placeholder-white/30 focus:outline-none focus:border-white/60 transition-colors"
-                                            placeholder="18-25"
+                                            className="w-full bg-transparent border-b-2 border-slate-400 py-1 text-sm font-bold text-slate-900 placeholder-slate-400 focus:outline-none focus:border-red-500 transition-colors"
+                                            placeholder="e.g. 18-25"
                                         />
                                     </div>
-
-                                    <div className="relative group pt-2">
-                                        <label className="text-sm font-bold text-white/70 mb-1 block">Brief Description</label>
-                                        <textarea
-                                            name="briefDescription" value={formData.briefDescription} onChange={handleInputChange} rows={2}
-                                            className="w-full bg-white/5 border-2 border-white/10 rounded-lg px-3 py-2 text-lg text-white placeholder-white/30 focus:outline-none focus:border-white/40 resize-none transition-colors"
-                                            placeholder="Tell us about your style..."
-                                        ></textarea>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Primary Contact */}
-                            <div className="space-y-6">
-                                <h2 className="text-2xl font-bold border-b-2 border-dashed border-white/20 pb-2 transform rotate-1 text-white inline-block">
-                                    Primary Contact
-                                </h2>
-
-                                <div className="space-y-5">
-                                    <div className="relative group">
-                                        <label className="text-sm font-bold text-white/70 mb-1 block">Full Name *</label>
-                                        <input
-                                            type="text" name="fullName" value={formData.fullName} onChange={handleInputChange} required
-                                            className="w-full bg-transparent border-b-2 border-white/20 px-2 py-2 text-xl text-white placeholder-white/30 focus:outline-none focus:border-white/60 transition-colors"
-                                            placeholder="Enter your full name"
-                                        />
-                                    </div>
-
-                                    <div className="relative group">
-                                        <label className="text-sm font-bold text-white/70 mb-1 block">Phone Number *</label>
-                                        <input
-                                            type="tel" name="phoneNumber" value={formData.phoneNumber} onChange={handleInputChange} required
-                                            className="w-full bg-transparent border-b-2 border-white/20 px-2 py-2 text-xl text-white placeholder-white/30 focus:outline-none focus:border-white/60 transition-colors"
-                                            placeholder="123-456-7890"
-                                        />
-                                    </div>
-
-                                    <div className="relative group">
-                                        <label className="text-sm font-bold text-white/70 mb-1 block">Email *</label>
-                                        <input
-                                            type="email" name="email" value={formData.email} onChange={handleInputChange} required
-                                            className="w-full bg-transparent border-b-2 border-white/20 px-2 py-2 text-xl text-white placeholder-white/30 focus:outline-none focus:border-white/60 transition-colors"
-                                            placeholder="Enter your email"
-                                        />
-                                    </div>
-
-                                    <div className="relative group">
-                                        <label className="text-sm font-bold text-white/70 mb-1 block">City *</label>
+                                    <div>
+                                        <label className="block text-[10px] font-black text-slate-600 uppercase tracking-widest mb-[2px]">City *</label>
                                         <input
                                             type="text" name="city" value={formData.city} onChange={handleInputChange} required
-                                            className="w-full bg-transparent border-b-2 border-white/20 px-2 py-2 text-xl text-white placeholder-white/30 focus:outline-none focus:border-white/60 transition-colors"
-                                            placeholder="Enter your city"
+                                            className="w-full bg-transparent border-b-2 border-slate-400 py-1 text-sm font-bold text-slate-900 placeholder-slate-400 focus:outline-none focus:border-red-500 transition-colors"
+                                            placeholder="Your city"
+                                        />
+                                    </div>
+                                </div>
+                                <div className="mt-3">
+                                    <label className="block text-[10px] font-black text-slate-600 uppercase tracking-widest mb-[2px]">Brief Description</label>
+                                    <textarea
+                                        name="briefDescription" value={formData.briefDescription} onChange={handleInputChange} rows={2}
+                                        className="w-full bg-slate-100/50 border border-slate-300 rounded px-2 py-1 text-xs font-medium text-slate-900 placeholder-slate-400 focus:outline-none focus:border-red-500 resize-none transition-colors"
+                                        placeholder="Tell us about your style..."
+                                    ></textarea>
+                                </div>
+                            </div>
+
+                            {/* Section: Contact */}
+                            <div>
+                                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 border-b border-dashed border-slate-300 pb-[2px] mb-2">
+                                    — Primary Contact —
+                                </p>
+                                <div className="grid grid-cols-2 gap-x-3 gap-y-3">
+                                    <div className="col-span-2">
+                                        <label className="block text-[10px] font-black text-slate-600 uppercase tracking-widest mb-[2px]">Full Name *</label>
+                                        <input
+                                            type="text" name="fullName" value={formData.fullName} onChange={handleInputChange} required
+                                            className="w-full bg-transparent border-b-2 border-slate-400 py-1 text-sm font-bold text-slate-900 placeholder-slate-400 focus:outline-none focus:border-red-500 transition-colors"
+                                            placeholder="Your full name"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-[10px] font-black text-slate-600 uppercase tracking-widest mb-[2px]">Phone *</label>
+                                        <input
+                                            type="tel" name="phoneNumber" value={formData.phoneNumber} onChange={handleInputChange} required
+                                            className="w-full bg-transparent border-b-2 border-slate-400 py-1 text-sm font-bold text-slate-900 placeholder-slate-400 focus:outline-none focus:border-red-500 transition-colors"
+                                            placeholder="Phone number"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-[10px] font-black text-slate-600 uppercase tracking-widest mb-[2px]">Email *</label>
+                                        <input
+                                            type="email" name="email" value={formData.email} onChange={handleInputChange} required
+                                            className="w-full bg-transparent border-b-2 border-slate-400 py-1 text-sm font-bold text-slate-900 placeholder-slate-400 focus:outline-none focus:border-red-500 transition-colors"
+                                            placeholder="Email address"
                                         />
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div className="pt-8 flex justify-center">
-                            <button
-                                type="submit"
-                                disabled={isSubmitting}
-                                className="px-12 py-4 chromatic-bg text-white font-bold text-2xl rounded-full transform hover:scale-105 transition-all shadow-[0_0_20px_rgba(255,0,128,0.4)] hover:shadow-[0_0_30px_rgba(255,0,128,0.6)] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed group relative overflow-hidden border-none"
-                            >
-                                <span className="relative z-10 drop-shadow-md">
+                            {/* Submit button */}
+                            <div className="pt-2 flex justify-center">
+                                <button
+                                    type="submit"
+                                    disabled={isSubmitting}
+                                    className="px-8 py-2.5 chromatic-bg text-white font-black text-sm tracking-widest uppercase rounded-full hover:scale-105 transition-all shadow-lg active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed border-none cursor-pointer rotate-[-0.5deg]"
+                                >
                                     {isSubmitting ? (
-                                        <Icon icon="lucide:loader-2" className="w-8 h-8 animate-spin mx-auto" />
+                                        <Icon icon="lucide:loader-2" className="w-5 h-5 animate-spin mx-auto" />
                                     ) : (
-                                        'SUBMIT'
+                                        'SUBMIT ENTRY'
                                     )}
-                                </span>
-                            </button>
-                        </div>
-                    </form>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
 
-                {/* Decorative Pins */}
-                <div className="absolute top-4 left-4 w-10 h-10 rounded-full bg-black/40 flex items-center justify-center backdrop-blur-sm">
-                    <div className="w-6 h-6 rounded-full bg-white/20 shadow-[inset_0_2px_4px_rgba(0,0,0,0.5)] flex items-center justify-center">
-                        <div className="w-2 h-2 rounded-full bg-black/60 shadow-sm"></div>
-                    </div>
+                {/* Red circular stamp decoration */}
+                <div className="absolute -top-6 -right-6 w-20 h-20 rounded-full bg-[#ff0000] border-4 border-[#cc0000] flex flex-col items-center justify-center text-white font-black rotate-12 shadow-xl z-20">
+                    <span className="text-[8px] tracking-widest">ABK</span>
+                    <span className="text-[10px] tracking-widest">2026</span>
+                    <span className="text-[7px] tracking-[0.15em] mt-1 border-t border-white/60 pt-1">OFFICIAL</span>
                 </div>
-                <div className="absolute top-4 right-4 w-10 h-10 rounded-full bg-black/40 flex items-center justify-center backdrop-blur-sm">
-                    <div className="w-6 h-6 rounded-full bg-white/20 shadow-[inset_0_2px_4px_rgba(0,0,0,0.5)] flex items-center justify-center">
-                        <div className="w-2 h-2 rounded-full bg-black/60 shadow-sm"></div>
-                    </div>
+
+                {/* Paper clip decoration top-left */}
+                <div className="absolute -top-3 left-12 w-4 h-12 bg-gradient-to-b from-gray-300 to-gray-400 rounded-full shadow-md z-20 rotate-[-5deg]"
+                    style={{ clipPath: 'polygon(25% 0%, 75% 0%, 75% 60%, 100% 60%, 100% 70%, 75% 70%, 75% 100%, 25% 100%, 25% 70%, 0% 70%, 0% 60%, 25% 60%)' }}>
                 </div>
             </div>
         </section>
