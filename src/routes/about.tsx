@@ -80,7 +80,17 @@ export default function About() {
       "https://pub-792299b5bd0346ff962308668cb1f98f.r2.dev/2023/ACCRA'S%20BOOGIE%20KING%20FIRST%20LOVE%20CHURCH%20%20DAG%20HEWARD-MILLS_72.webp",
     ],
     "2024": [
-      "https://pub-792299b5bd0346ff962308668cb1f98f.r2.dev/Hall%20of%20Fame/2024w.webp",
+      "https://pub-792299b5bd0346ff962308668cb1f98f.r2.dev/2024/ACCRA'S%20BOOGIE%20KING%20FIRST%20LOVE%20CHURCH%20.%20DAG%20HEWARD-MILLS_41.webp",
+      "https://pub-792299b5bd0346ff962308668cb1f98f.r2.dev/2024/ACCRA'S%20BOOGIE%20KING%20FIRST%20LOVE%20CHURCH%20.%20DAG%20HEWARD-MILLS_52.webp",
+      "https://pub-792299b5bd0346ff962308668cb1f98f.r2.dev/2024/ACCRA'S%20BOOGIE%20KING%20FIRST%20LOVE%20CHURCH%20.%20DAG%20HEWARD-MILLS_59.webp",
+      "https://pub-792299b5bd0346ff962308668cb1f98f.r2.dev/2024/ACCRA'S%20BOOGIE%20KING%20FIRST%20LOVE%20CHURCH%20.%20DAG%20HEWARD-MILLS_92.webp",
+      "https://pub-792299b5bd0346ff962308668cb1f98f.r2.dev/2024/ACCRAS%20BOOGIE%20KING%20FIRST%20LOVE%20CHURCH%20.%20DAG%20HEWARD-MILLS_138.webp",
+      "https://pub-792299b5bd0346ff962308668cb1f98f.r2.dev/2024/ACCRAS%20BOOGIE%20KING%20FIRST%20LOVE%20CHURCH%20.%20DAG%20HEWARD-MILLS_323.webp",
+      "https://pub-792299b5bd0346ff962308668cb1f98f.r2.dev/2024/ACCRAS%20BOOGIE%20KING%20FIRST%20LOVE%20CHURCH%20.%20DAG%20HEWARD-MILLS_371.webp",
+      "https://pub-792299b5bd0346ff962308668cb1f98f.r2.dev/2024/ACCRAS%20BOOGIE%20KING%20FIRST%20LOVE%20CHURCH%20.%20DAG%20HEWARD-MILLS_392.webp",
+      "https://pub-792299b5bd0346ff962308668cb1f98f.r2.dev/2024/ACCRAS%20BOOGIE%20KING%20FIRST%20LOVE%20CHURCH%20.%20DAG%20HEWARD-MILLS_431.webp",
+      "https://pub-792299b5bd0346ff962308668cb1f98f.r2.dev/2024/ACCRAS%20BOOGIE%20KING%20FIRST%20LOVE%20CHURCH%20.%20DAG%20HEWARD-MILLS_460.webp",
+      "https://pub-792299b5bd0346ff962308668cb1f98f.r2.dev/2024/ACCRAS%20BOOGIE%20KING%20FIRST%20LOVE%20CHURCH%20.%20DAG%20HEWARD-MILLS_57.webp",
     ],
     "2025": [
       "https://pub-792299b5bd0346ff962308668cb1f98f.r2.dev/Hall%20of%20Fame/2025w.webp",
@@ -93,7 +103,7 @@ export default function About() {
     "2023":
       "https://pub-792299b5bd0346ff962308668cb1f98f.r2.dev/2023/ACCRA'S%20BOOGIE%20KING%2023%20FIRST%20LOVE%20CHURCH%20DAG%20HEWARD-MILLS_145.webp",
     "2024":
-      "https://pub-792299b5bd0346ff962308668cb1f98f.r2.dev/Hall%20of%20Fame/2024w.webp",
+      "https://pub-792299b5bd0346ff962308668cb1f98f.r2.dev/2024/ACCRA'S%20BOOGIE%20KING%20FIRST%20LOVE%20CHURCH%20.%20DAG%20HEWARD-MILLS_41.webp",
     "2025":
       "https://pub-792299b5bd0346ff962308668cb1f98f.r2.dev/Hall%20of%20Fame/2025w.webp",
   };
@@ -284,7 +294,9 @@ export default function About() {
           </div>
 
           {/* Modal Content */}
-          <div className={`grow overflow-y-auto max-h-[75vh] px-2 ${activeImageIndex === null ? 'py-4' : 'flex items-center justify-center'}`}>
+          <div
+            className={`grow overflow-y-auto max-h-[75vh] px-2 ${activeImageIndex === null ? "py-4" : "flex items-center justify-center"}`}
+          >
             {activeImageIndex === null ? (
               /* Grid View of all images in selected year */
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 w-full max-w-6xl mx-auto">

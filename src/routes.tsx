@@ -1,6 +1,5 @@
 import { Route, Routes } from "react-router";
 import Home from "./routes/home";
-import Gallery from "./routes/gallery";
 import Register from "./routes/register";
 import AdminDashboard from "./routes/admin";
 import FAQ from "./routes/faq";
@@ -14,7 +13,6 @@ export default function AppRoutes() {
     <Routes>
       <Route index element={<Home />} />
       <Route path="/about" element={<About />} />
-      <Route path="/gallery" element={<Gallery />} />
       <Route path="/merch" element={<Merch />} />
       <Route path="/vendors" element={<Vendors />} />
       <Route path="/register" element={<Register />} />

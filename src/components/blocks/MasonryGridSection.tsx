@@ -6,7 +6,7 @@ export default function MasonryGridSection() {
   const images = [
     // Original 6 images (Rows 1-2)
     {
-      src: "https://pub-792299b5bd0346ff962308668cb1f98f.r2.dev/gallery/ACCRA'S%20BOOGIE%20KING%20FIRST%20LOVE%20CHURCH%20.%20DAG%20HEWARD-MILLS_76.webp",
+      src: "https://pub-792299b5bd0346ff962308668cb1f98f.r2.dev/gallery/compressed/Accra%20Boogies%20King%2020251509%20(2).webp",
       span: "col-span-1 row-span-2",
     },
     {
@@ -40,8 +40,7 @@ export default function MasonryGridSection() {
       span: "col-span-2 row-span-1",
     }, // Wide
     {
-      src: "https://pub-792299b5bd0346ff962308668cb1f98f.r2.dev/gallery/compressed/Accra%20Boogies%20King%2020251509%20(2).webp",
-
+      src: "https://pub-792299b5bd0346ff962308668cb1f98f.r2.dev/gallery/ACCRA'S%20BOOGIE%20KING%20FIRST%20LOVE%20CHURCH%20.%20DAG%20HEWARD-MILLS_76.webp",
       span: "col-span-1 row-span-2",
     }, // Tall
     {

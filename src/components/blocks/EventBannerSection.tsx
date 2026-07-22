@@ -12,7 +12,7 @@ export default function EventBannerSection() {
         <div
           className="w-full md:w-1/2 py-10 md:py-16 px-6 flex items-center justify-center relative overflow-hidden bg-cover bg-center"
           style={{
-            backgroundImage: `url('https://pub-792299b5bd0346ff962308668cb1f98f.r2.dev/gallery/compressed/Accras%20Boogie%20KIng%202025%20FIRST%20LOVE%20CHURCH%20DAG%20HEWARD-MILLS_213%20(1).webp')`,
+            backgroundImage: `url('https://pub-792299b5bd0346ff962308668cb1f98f.r2.dev/gallery/people.webp')`,
           }}
         >
           {/* Orange Color Tint Overlay */}
@@ -32,7 +32,7 @@ export default function EventBannerSection() {
         <div
           className="w-full md:w-1/2 py-10 md:py-16 px-6 flex items-center justify-center relative overflow-hidden bg-cover bg-center"
           style={{
-            backgroundImage: `url('https://pub-792299b5bd0346ff962308668cb1f98f.r2.dev/gallery/compressed/Accras%20Boogie%20KIng%202025%20FIRST%20LOVE%20CHURCH%20DAG%20HEWARD-MILLS_319%20(1).webp')`,
+            backgroundImage: `url('https://pub-792299b5bd0346ff962308668cb1f98f.r2.dev/gallery/people2.webp')`,
           }}
         >
           {/* Red Color Tint Overlay */}
