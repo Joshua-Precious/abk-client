@@ -6,11 +6,11 @@ export default function MasonryGridSection() {
   const images = [
     // Original 6 images (Rows 1-2)
     {
-      src: "https://pub-792299b5bd0346ff962308668cb1f98f.r2.dev/gallery/compressed/Accra%20Boogies%20King%2020251502%20(1).webp",
+      src: "https://pub-792299b5bd0346ff962308668cb1f98f.r2.dev/gallery/ACCRA'S%20BOOGIE%20KING%20FIRST%20LOVE%20CHURCH%20.%20DAG%20HEWARD-MILLS_76.webp",
       span: "col-span-1 row-span-2",
     },
     {
-      src: "https://pub-792299b5bd0346ff962308668cb1f98f.r2.dev/gallery/compressed/Accra%20Boogies%20King%2020251509%20(2).webp",
+      src: "https://pub-792299b5bd0346ff962308668cb1f98f.r2.dev/gallery/compressed/Accras%20Boogie%20KIng%202025%20FIRST%20LOVE%20CHURCH%20DAG%20HEWARD-MILLS_500%20(1).webp",
       span: "col-span-2 row-span-1",
     },
     {
@@ -26,7 +26,8 @@ export default function MasonryGridSection() {
       span: "col-span-1 row-span-1",
     },
     {
-      src: "https://pub-792299b5bd0346ff962308668cb1f98f.r2.dev/gallery/compressed/Accras%20Boogie%20KIng%202025%20FIRST%20LOVE%20CHURCH%20DAG%20HEWARD-MILLS_500%20(1).webp",
+      src: "https://pub-792299b5bd0346ff962308668cb1f98f.r2.dev/gallery/compressed/Accra%20Boogies%20King%2020251502%20(1).webp",
+
       span: "col-span-1 row-span-1",
     },
     // New 4 images (Rows 3-4)
@@ -39,7 +40,8 @@ export default function MasonryGridSection() {
       span: "col-span-2 row-span-1",
     }, // Wide
     {
-      src: "https://pub-792299b5bd0346ff962308668cb1f98f.r2.dev/gallery/ACCRA'S%20BOOGIE%20KING%20FIRST%20LOVE%20CHURCH%20.%20DAG%20HEWARD-MILLS_76.webp",
+      src: "https://pub-792299b5bd0346ff962308668cb1f98f.r2.dev/gallery/compressed/Accra%20Boogies%20King%2020251509%20(2).webp",
+
       span: "col-span-1 row-span-2",
     }, // Tall
     {
@@ -84,8 +86,19 @@ export default function MasonryGridSection() {
             className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors text-white"
             aria-label="Close"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
             </svg>
           </button>
           <img

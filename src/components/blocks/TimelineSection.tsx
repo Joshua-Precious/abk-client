@@ -63,7 +63,7 @@ export default function TimelineSection() {
           src="/Crown.webp"
           alt=""
           aria-hidden="true"
-          className="w-16 md:w-24 drop-shadow-xl animate-float-slow"
+          className="w-32 md:w-52 drop-shadow-xl animate-float-slow"
         />
       </div>
       <div className="absolute top-1/3 right-2 md:right-10 z-0 opacity-35 pointer-events-none hidden md:block">
@@ -71,7 +71,7 @@ export default function TimelineSection() {
           src="/Star.webp"
           alt=""
           aria-hidden="true"
-          className="w-12 md:w-16 drop-shadow-xl animate-float-slow"
+          className="w-28 md:w-40 drop-shadow-xl animate-float-slow"
         />
       </div>
       <div className="absolute bottom-10 left-6 md:left-16 z-0 opacity-30 pointer-events-none hidden lg:block">
@@ -79,7 +79,7 @@ export default function TimelineSection() {
           src="/Music.webp"
           alt=""
           aria-hidden="true"
-          className="w-14 md:w-20 drop-shadow-xl animate-float-slower"
+          className="w-28 md:w-40 drop-shadow-xl animate-float-slower"
         />
       </div>
 

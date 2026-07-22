@@ -23,22 +23,26 @@ export default function PartnersSection() {
                         </span>
                     </div>
 
-                    {/* Two logos side by side */}
                     <div className="flex flex-col md:flex-row relative">
-                        {/* Vertical Divider (desktop) */}
-                        <div className="hidden md:block absolute left-1/2 top-8 bottom-8 w-[2px] bg-[#ffcc00]/40 -translate-x-1/2" />
-                        {/* Horizontal Divider (mobile) */}
+                        <div className="hidden md:block absolute left-1/3 top-8 bottom-8 w-[2px] bg-[#ffcc00]/40" />
+                        <div className="hidden md:block absolute left-2/3 top-8 bottom-8 w-[2px] bg-[#ffcc00]/40" />
                         <div className="md:hidden w-full h-[2px] bg-[#ffcc00]/40" />
 
-                        <div className="w-full md:w-1/2 p-8 md:p-12 flex items-center justify-center">
+                        <div className="w-full md:w-1/3 p-8 md:p-12 flex items-center justify-center">
                             <div className="h-20 md:h-28 flex items-center justify-center bg-white p-4 rounded-xl">
                                 <img src="/assets/spons1.png" alt="Supporting Partner 1" className="max-h-full max-w-[180px] object-contain" />
                             </div>
                         </div>
 
-                        <div className="w-full md:w-1/2 p-8 md:p-12 flex items-center justify-center">
+                        <div className="w-full md:w-1/3 p-8 md:p-12 flex items-center justify-center">
                             <div className="h-20 md:h-28 flex items-center justify-center">
                                 <img src="/assets/spons2.png" alt="Supporting Partner 2" className="max-h-full max-w-[180px] object-contain" />
+                            </div>
+                        </div>
+
+                        <div className="w-full md:w-1/3 p-8 md:p-12 flex items-center justify-center">
+                            <div className="h-20 md:h-28 flex items-center justify-center rounded-xl">
+                                <img src="/assets/spons5.png" alt="Supporting Partner 3" className="max-h-full max-w-[180px] object-contain rounded-xl" />
                             </div>
                         </div>
                     </div>
@@ -68,7 +72,7 @@ export default function PartnersSection() {
 
                         <div className="w-full md:w-1/2 p-8 md:p-12 flex items-center justify-center">
                             <div className="h-20 md:h-28 flex items-center justify-center">
-                                <img src="/assets/spons4.jpeg" alt="Media Partner 2" className="max-h-full max-w-[180px] object-contain" />
+                                <img src="/assets/spons4.jpeg" alt="Media Partner 2" className="max-h-full max-w-[180px] object-contain rounded-xl" />
                             </div>
                         </div>
                     </div>
