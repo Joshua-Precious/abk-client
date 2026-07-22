@@ -27,6 +27,10 @@ export default function Header() {
     navigate("/merch");
     setIsMobileMenuOpen(false);
   };
+  const navigateToVendors = () => {
+    navigate("/vendors");
+    setIsMobileMenuOpen(false);
+  };
 
   const currentPage = location.pathname;
 
@@ -34,6 +38,7 @@ export default function Header() {
     { label: "HOME", path: "/", action: navigateToHome },
     { label: "ABOUT", path: "/about", action: navigateToAbout },
     { label: "MERCH", path: "/merch", action: navigateToMerch },
+    { label: "VENDORS", path: "/vendors", action: navigateToVendors },
     { label: "FAQS", path: "/faq", action: navigateToFAQ },
   ];
 
@@ -68,10 +73,12 @@ export default function Header() {
         <div className="flex items-center gap-4">
           <button
             onClick={navigateToRegister}
-            className="flex cursor-pointer flex-col gap-1 items-center justify-center rounded-md border-2 border-white bg-[linear-gradient(180deg,#ff3b00_0%,#ff1f5b_35%,#7a2cff_100%)] px-4 py-2 text-center text-sm font-extrabold uppercase leading-none text-white shadow-[0_0_18px_rgba(255,255,255,0.22),inset_0_1px_0_rgba(255,255,255,0.45)] transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_22px_rgba(255,255,255,0.28),inset_0_1px_0_rgba(255,255,255,0.55)] active:scale-[0.98] md:px-5 md:py-2 md:text-sm"
+            className="flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-white bg-[linear-gradient(180deg,#ff3b00_0%,#ff1f5b_35%,#7a2cff_100%)] px-4 py-2.5 text-center font-extrabold uppercase text-white shadow-[0_0_18px_rgba(255,255,255,0.22),inset_0_1px_0_rgba(255,255,255,0.45)] transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_22px_rgba(255,255,255,0.28),inset_0_1px_0_rgba(255,255,255,0.55)] active:scale-[0.98] md:px-6 md:py-3"
           >
-            <span className="block">REGISTER</span>
-            <span className="block text-[0.95em] tracking-[0.18em]">
+            <span className="block text-sm md:text-base leading-tight tracking-wider text-center w-full">
+              REGISTER
+            </span>
+            <span className="block text-xs md:text-sm leading-tight tracking-[0.2em] text-center w-full mt-0.5">
               A TEAM
             </span>
           </button>
@@ -110,10 +117,12 @@ export default function Header() {
           </div>
           <button
             onClick={navigateToRegister}
-            className="mt-2 flex w-full max-w-50 flex-col items-center justify-center rounded-md border-2 border-[#FFF59D] bg-[linear-gradient(180deg,#ff3b00_0%,#ff1f5b_35%,#7a2cff_100%)] px-4 py-3 text-center font-extrabold uppercase leading-none text-white shadow-[0_0_18px_rgba(255,255,255,0.22),inset_0_1px_0_rgba(255,255,255,0.45)] transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_22px_rgba(255,255,255,0.28),inset_0_1px_0_rgba(255,255,255,0.55)] active:scale-[0.98] text-sm"
+            className="mt-2 flex w-full max-w-50 flex-col items-center justify-center rounded-xl border-2 border-white bg-[linear-gradient(180deg,#ff3b00_0%,#ff1f5b_35%,#7a2cff_100%)] px-4 py-3 text-center font-extrabold uppercase text-white shadow-[0_0_18px_rgba(255,255,255,0.22),inset_0_1px_0_rgba(255,255,255,0.45)] transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_22px_rgba(255,255,255,0.28),inset_0_1px_0_rgba(255,255,255,0.55)] active:scale-[0.98]"
           >
-            <span className="block">REGISTER</span>
-            <span className="block text-[0.95em] tracking-[0.18em]">
+            <span className="block text-sm leading-tight tracking-wider text-center w-full">
+              REGISTER
+            </span>
+            <span className="block text-xs leading-tight tracking-[0.2em] text-center w-full mt-0.5">
               A TEAM
             </span>
           </button>

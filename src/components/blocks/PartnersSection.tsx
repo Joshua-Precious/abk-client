@@ -5,7 +5,7 @@ export default function PartnersSection() {
             <img 
                 src="/Star.webp" 
                 alt="Star" 
-                className="absolute right-0 md:-right-8 top-0 md:top-12 w-24 md:w-48 z-20 pointer-events-none drop-shadow-xl hidden md:block"
+                className="absolute -right-2 md:-right-8 -top-10 md:top-12 w-24 md:w-48 z-20 pointer-events-none drop-shadow-xl"
             />
             
             <h2 className="text-3xl md:text-5xl flex items-center justify-center font-black tracking-widest text-white mb-12 drop-shadow-sm uppercase">
