@@ -24,7 +24,7 @@ const timelineEvents: TimelineEvent[] = [
     dateColorClass: "text-purple-400",
   },
   {
-    date: "16th August, 2026",
+    date: "15th August, 2026",
     title: "Auditions",
     icon: "lucide:flame",
     side: "right",
