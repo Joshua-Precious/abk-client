@@ -74,10 +74,6 @@ export default function FAQ() {
         "No, there's a limited time frame and slots for dance team registration. Early registration is adviced.",
     },
     {
-      question: "Is there an age limit?",
-      answer: "16+. Under 16 must come with a parent/guardian.",
-    },
-    {
       question: "What should I wear?",
       answer: "Streetwear. Come stylish. You may never know who is watching.",
     },
