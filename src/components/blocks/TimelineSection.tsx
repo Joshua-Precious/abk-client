@@ -9,28 +9,29 @@ interface TimelineEvent {
   circleClass: string;
   iconClass: string;
   dateColorClass: string;
+  cardClass?: string;
 }
 
 const timelineEvents: TimelineEvent[] = [
   {
     date: "22nd July - 5th August 2026",
-    title: "Online Registrations",
+    title: "Online Registrations (Closed)",
     icon: "lucide:user-plus",
     side: "left",
-    active: true,
-    circleClass:
-      "bg-purple-500/20 border-purple-500 shadow-lg shadow-purple-500/20 animate-pulse",
-    iconClass: "text-purple-400",
-    dateColorClass: "text-purple-400",
+    circleClass: "bg-black/40 border-white/10 grayscale",
+    iconClass: "text-white/30",
+    dateColorClass: "text-white/30",
+    cardClass: "grayscale opacity-50",
   },
   {
     date: "16th August, 2026",
     title: "Auditions",
     icon: "lucide:flame",
     side: "right",
+    active: true,
     circleClass:
-      "bg-black/60 border-white/20 group-hover:bg-pink-500/10 group-hover:border-pink-500",
-    iconClass: "text-white/60 group-hover:text-pink-400",
+      "bg-pink-500/20 border-pink-500 shadow-lg shadow-pink-500/20 animate-pulse",
+    iconClass: "text-pink-400",
     dateColorClass: "text-pink-400",
   },
   {
@@ -124,8 +125,11 @@ export default function TimelineSection() {
                   <div className="hidden md:flex w-full pl-0 md:pr-8 md:text-right justify-end">
                     {isLeft && (
                       <div
-                        className={`liquid-glass border border-white/10 rounded-2xl p-6 md:p-7 transition-all duration-300 transform hover:-translate-y-1 md:ml-auto max-w-md w-full text-left bg-black/50 backdrop-blur-xl shadow-[0_12px_40px_rgba(0,0,0,0.35)] ${index === 0 ? "border-purple-500/30" : ""
-                          }`}
+                        className={`liquid-glass border border-white/10 rounded-2xl p-6 md:p-7 transition-all duration-300 transform hover:-translate-y-1 md:ml-auto max-w-md w-full text-left bg-black/50 backdrop-blur-xl shadow-[0_12px_40px_rgba(0,0,0,0.35)] ${
+                          index === 0 && !event.cardClass
+                            ? "border-purple-500/30"
+                            : ""
+                        } ${event.cardClass ?? ""}`}
                       >
                         <span
                           className={`text-xs md:text-sm font-bold  block mb-2 ${event.dateColorClass}`}
@@ -146,8 +150,11 @@ export default function TimelineSection() {
                   <div className="w-full pl-16 pr-4 md:pl-8 md:pr-0 md:text-left flex justify-start">
                     <div className="md:hidden w-full max-w-md ml-auto text-left">
                       <div
-                        className={`liquid-glass border border-white/10 rounded-2xl p-6 transition-all duration-300 transform hover:-translate-y-1 w-full bg-black/50 backdrop-blur-xl shadow-[0_12px_40px_rgba(0,0,0,0.35)] ${isLeft && index === 0 ? "border-purple-500/30" : ""
-                          } ${!isLeft && index === timelineEvents.length - 1 ? "border-green-500/30" : ""}`}
+                        className={`liquid-glass border border-white/10 rounded-2xl p-6 transition-all duration-300 transform hover:-translate-y-1 w-full bg-black/50 backdrop-blur-xl shadow-[0_12px_40px_rgba(0,0,0,0.35)] ${
+                          isLeft && index === 0 && !event.cardClass
+                            ? "border-purple-500/30"
+                            : ""
+                        } ${!isLeft && index === timelineEvents.length - 1 ? "border-green-500/30" : ""} ${event.active ? "pulse-card-pink border-pink-500/40" : ""} ${event.cardClass ?? ""}`}
                       >
                         <span
                           className={`text-xs font-bold block mb-2 ${event.dateColorClass}`}
@@ -161,10 +168,13 @@ export default function TimelineSection() {
                     </div>
                     {!isLeft && (
                       <div
-                        className={`liquid-glass border border-white/10 rounded-2xl p-6 md:p-7 transition-all duration-300 transform hover:-translate-y-1 md:mr-auto max-w-md w-full text-left bg-black/50 backdrop-blur-xl shadow-[0_12px_40px_rgba(0,0,0,0.35)] ${index === timelineEvents.length - 1
-                            ? "border-green-500/30"
-                            : ""
-                          } hidden md:block`}
+                        className={`liquid-glass border border-white/10 rounded-2xl p-6 md:p-7 transition-all duration-300 transform hover:-translate-y-1 md:mr-auto max-w-md w-full text-left bg-black/50 backdrop-blur-xl shadow-[0_12px_40px_rgba(0,0,0,0.35)] ${
+                          event.active
+                            ? "border-pink-500/40 pulse-card-pink"
+                            : index === timelineEvents.length - 1
+                              ? "border-green-500/30"
+                              : ""
+                        } hidden md:block`}
                       >
                         <span
                           className={`text-xs md:text-sm font-bold block mb-2 ${event.dateColorClass}`}

@@ -5,21 +5,21 @@ const merchItems = [
   {
     id: 1,
     name: "DLD Tee (Dance Like David)",
-    price: "₵150",
+    price: "₵200",
     image:
       "https://pub-792299b5bd0346ff962308668cb1f98f.r2.dev/merch/ABK%20-%20DLD%20Back.jpg.webp",
   },
   {
     id: 2,
     name: "Spirit Moved Tee (Black)",
-    price: "₵150",
+    price: "₵200",
     image:
       "https://pub-792299b5bd0346ff962308668cb1f98f.r2.dev/merch/ABK%20-%20Spirit%20Moved%20Back.jpg.webp",
   },
   {
     id: 3,
     name: "Spirit Moved Tee (Brown)",
-    price: "₵150",
+    price: "₵200",
     image:
       "https://pub-792299b5bd0346ff962308668cb1f98f.r2.dev/merch/ABK%20-%20Spirit%20Moved%20Brown%20Back.jpg.webp",
   },
