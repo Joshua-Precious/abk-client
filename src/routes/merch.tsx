@@ -1,11 +1,28 @@
 import Header from "../components/blocks/Header";
 import Footer from "../components/blocks/Footer";
 
-const placeholderItems = [
-  { id: 1, name: "ABK Classic Tee", category: "T-Shirts" },
-  { id: 2, name: "Champion Hoodie", category: "Hoodies" },
-  { id: 3, name: "Royals Cap", category: "Headwear" },
-  { id: 4, name: "ABK Track Jacket", category: "Jackets" },
+const merchItems = [
+  {
+    id: 1,
+    name: "DLD Tee (Dance Like David)",
+    price: "₵150",
+    image:
+      "https://pub-792299b5bd0346ff962308668cb1f98f.r2.dev/merch/ABK%20-%20DLD%20Back.jpg.webp",
+  },
+  {
+    id: 2,
+    name: "Spirit Moved Tee (Black)",
+    price: "₵150",
+    image:
+      "https://pub-792299b5bd0346ff962308668cb1f98f.r2.dev/merch/ABK%20-%20Spirit%20Moved%20Back.jpg.webp",
+  },
+  {
+    id: 3,
+    name: "Spirit Moved Tee (Brown)",
+    price: "₵150",
+    image:
+      "https://pub-792299b5bd0346ff962308668cb1f98f.r2.dev/merch/ABK%20-%20Spirit%20Moved%20Brown%20Back.jpg.webp",
+  },
 ];
 
 const gradientButtonStyle = {
@@ -33,7 +50,7 @@ export default function Merch() {
             <div className="w-24 h-1 bg-[#f0b405] mx-auto mt-6 rounded-full" />
           </div>
 
-          {/* Coming Soon Banner */}
+          {/* Limited Edition Banner */}
           <div className="flex justify-center mb-16 section-fade-in">
             <div
               className="px-8 py-4 rounded-xl inline-flex items-center gap-3"
@@ -41,42 +58,27 @@ export default function Merch() {
             >
               <span className="w-2.5 h-2.5 rounded-full bg-[#f0b405] animate-pulse inline-block" />
               <span className="text-white font-black text-sm md:text-base tracking-wide uppercase">
-                Collection Dropping Soon
+                Limited Edition — Order Now!
               </span>
               <span className="w-2.5 h-2.5 rounded-full bg-[#f0b405] animate-pulse inline-block" />
             </div>
           </div>
 
           {/* Product Grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 max-w-6xl mx-auto">
-            {placeholderItems.map((item) => (
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 max-w-6xl mx-auto">
+            {merchItems.map((item) => (
               <div
                 key={item.id}
                 className="group relative liquid-glass rounded-2xl border border-white/10 overflow-hidden transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_10px_30px_rgba(240,180,5,0.15)] cursor-pointer"
               >
-                {/* Placeholder Image Area */}
-                <div className="relative aspect-square bg-linear-to-br from-white/5 to-black/30 flex flex-col items-center justify-center overflow-hidden">
-                  {/* Subtle background crown watermark */}
+                {/* Product Image */}
+                <div className="relative aspect-square bg-linear-to-br from-white/5 to-black/30 overflow-hidden">
                   <img
-                    src="/Crown.webp"
-                    alt=""
-                    aria-hidden="true"
-                    className="absolute w-3/4 opacity-[0.06] pointer-events-none select-none"
+                    src={item.image}
+                    alt={item.name}
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    loading="lazy"
                   />
-                  {/* Coming Soon overlay */}
-                  <div className="flex flex-col items-center gap-2 relative z-10">
-                    <div className="w-14 h-14 md:w-16 md:h-16 rounded-full border-2 border-white/15 bg-white/5 flex items-center justify-center">
-                      <img
-                        src="/Crown.webp"
-                        alt=""
-                        aria-hidden="true"
-                        className="w-8 h-8 object-contain opacity-70 drop-shadow-[0_0_10px_rgba(255,255,255,0.15)]"
-                      />
-                    </div>
-                    <span className="text-white/30 text-[10px] md:text-xs font-black tracking-[0.25em] uppercase">
-                      Coming Soon
-                    </span>
-                  </div>
 
                   {/* Hover shimmer effect */}
                   <div className="absolute inset-0 bg-linear-to-tr from-[#f0b405]/0 via-[#f0b405]/5 to-[#f0b405]/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -85,18 +87,24 @@ export default function Merch() {
                 {/* Card Info */}
                 <div className="p-4">
                   <span className="text-[10px] font-black tracking-[0.25em] uppercase text-[#f0b405]/70">
-                    {item.category}
+                    {item.price}
                   </span>
                   <h3 className="text-sm md:text-base font-bold text-white mt-1 tracking-wide group-hover:text-[#f0b405] transition-colors duration-300">
                     {item.name}
                   </h3>
-                  <div className="mt-3 flex items-center justify-between">
-                    <span className="text-white/30 text-xs font-semibold tracking-widest">
-                      — —
+                  <div className="mt-3 flex items-center justify-between gap-2">
+                    <span className="text-white/40 text-[10px] font-black tracking-widest uppercase">
+                      Limited Edition
                     </span>
-                    <span className="text-[10px] font-black text-white/25 tracking-widest uppercase bg-white/5 px-2 py-1 rounded-md border border-white/10">
-                      TBA
-                    </span>
+                    <a
+                      href="https://steaze.store/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className="text-[10px] md:text-xs py-3 font-black text-[#05070a] tracking-widest uppercase bg-[#f0b405] hover:bg-[#ffd84a] px-3 rounded-md transition-colors duration-300 shadow-[0_0_15px_rgba(240,180,5,0.3)] hover:shadow-[0_0_20px_rgba(240,180,5,0.5)]"
+                    >
+                      Order Now {">>"}
+                    </a>
                   </div>
                 </div>
 
