@@ -282,7 +282,7 @@ export default function AdminDashboard() {
                                     </div>
                                 ) : (
                                     <div className="overflow-x-auto custom-scrollbar pb-4">
-                                        <table className="w-full text-left border-collapse">
+                                        <table className="w-full text-left border-collapse font-mono">
                                             <thead>
                                                 <tr className="border-b border-white/10 text-white/60 text-sm uppercase tracking-wider">
                                                     <th className="px-4 py-4 font-medium min-w-[200px]">Team</th>
