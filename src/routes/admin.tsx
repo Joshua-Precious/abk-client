@@ -3,6 +3,7 @@ import Header from "../components/blocks/Header";
 import SocialMediaFooter from "../components/blocks/Footer";
 import GlassyContainer from "../components/ui/GlassyContainer";
 import { Icon } from "@iconify/react";
+import { toast } from "react-toastify";
 
 interface Registration {
     id: string;
@@ -117,6 +118,54 @@ export default function AdminDashboard() {
             hour: '2-digit',
             minute: '2-digit'
         }).format(date);
+    };
+
+    const handleDownloadCSV = async () => {
+        try {
+            const token = localStorage.getItem("admin_token");
+            const API_URL = import.meta.env.VITE_API_URL;
+            const response = await fetch(`${API_URL}/api/registrations/download/csv`, {
+                headers: { "Authorization": `Bearer ${token}` }
+            });
+            if (!response.ok) throw new Error("Failed to download CSV");
+            
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = `registrations_${new Date().toISOString().split('T')[0]}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        } catch (error) {
+            console.error("Error downloading CSV:", error);
+            toast.error("Error downloading CSV");
+        }
+    };
+
+    const handleDownloadExcel = async () => {
+        try {
+            const token = localStorage.getItem("admin_token");
+            const API_URL = import.meta.env.VITE_API_URL;
+            const response = await fetch(`${API_URL}/api/registrations/download/excel`, {
+                headers: { "Authorization": `Bearer ${token}` }
+            });
+            if (!response.ok) throw new Error("Failed to download Excel");
+            
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = `registrations_${new Date().toISOString().split('T')[0]}.xlsx`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        } catch (error) {
+            console.error("Error downloading Excel:", error);
+            toast.error("Error downloading Excel");
+        }
     };
 
     return (
@@ -245,13 +294,29 @@ export default function AdminDashboard() {
                                         </span>
                                     </div>
                                 </div>
-                                <button
-                                    onClick={handleLogout}
-                                    className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 text-white/70 border border-white/10 hover:bg-red-500/10 hover:text-red-400 hover:border-red-500/20 transition-colors font-medium text-sm"
-                                >
-                                    <Icon icon="lucide:log-out" className="w-4 h-4" />
-                                    <span>Sign Out</span>
-                                </button>
+                                <div className="flex items-center gap-3">
+                                    <button
+                                        onClick={handleDownloadCSV}
+                                        className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 text-white/70 border border-white/10 hover:bg-[#f0b405]/10 hover:text-[#f0b405] hover:border-[#f0b405]/30 transition-colors font-medium text-sm"
+                                    >
+                                        <Icon icon="lucide:download" className="w-4 h-4" />
+                                        <span>CSV</span>
+                                    </button>
+                                    <button
+                                        onClick={handleDownloadExcel}
+                                        className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 text-white/70 border border-white/10 hover:bg-[#f0b405]/10 hover:text-[#f0b405] hover:border-[#f0b405]/30 transition-colors font-medium text-sm"
+                                    >
+                                        <Icon icon="lucide:sheet" className="w-4 h-4" />
+                                        <span>Excel</span>
+                                    </button>
+                                    <button
+                                        onClick={handleLogout}
+                                        className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 text-white/70 border border-white/10 hover:bg-red-500/10 hover:text-red-400 hover:border-red-500/20 transition-colors font-medium text-sm"
+                                    >
+                                        <Icon icon="lucide:log-out" className="w-4 h-4" />
+                                        <span>Sign Out</span>
+                                    </button>
+                                </div>
                             </div>
 
                             <GlassyContainer className="rounded-3xl p-4 md:p-8 overflow-hidden">
