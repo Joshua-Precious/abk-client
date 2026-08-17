@@ -28,21 +28,22 @@ const timelineEvents: TimelineEvent[] = [
     title: "Auditions",
     icon: "lucide:flame",
     side: "right",
-    active: true,
-    circleClass:
-      "bg-pink-500/20 border-pink-500 shadow-lg shadow-pink-500/20 animate-pulse",
-    iconClass: "text-pink-400",
-    dateColorClass: "text-pink-400",
+    circleClass: "bg-black/40 border-white/10 grayscale",
+    iconClass: "text-white/30",
+    dateColorClass: "text-white/30",
+    cardClass: "grayscale opacity-50",
   },
   {
     date: "19th - 21st August, 2026",
     title: "Qualifiers Bootcamp",
     icon: "lucide:tv",
     side: "left",
+    active: true,
     circleClass:
-      "bg-black/60 border-white/20 group-hover:bg-orange-500/10 group-hover:border-orange-500",
-    iconClass: "text-white/60 group-hover:text-orange-400",
+      "bg-orange-500/20 border-orange-500 shadow-lg shadow-orange-500/20 animate-pulse",
+    iconClass: "text-orange-400",
     dateColorClass: "text-orange-400",
+    cardClass: "pulse-card-orange border-orange-500/40",
   },
   {
     date: "25th September, 2026",
@@ -154,7 +155,7 @@ export default function TimelineSection() {
                           isLeft && index === 0 && !event.cardClass
                             ? "border-purple-500/30"
                             : ""
-                        } ${!isLeft && index === timelineEvents.length - 1 ? "border-green-500/30" : ""} ${event.active ? "pulse-card-pink border-pink-500/40" : ""} ${event.cardClass ?? ""}`}
+                        } ${!isLeft && index === timelineEvents.length - 1 ? "border-green-500/30" : ""} ${event.active ? "pulse-card-orange border-orange-500/40" : ""} ${event.cardClass ?? ""}`}
                       >
                         <span
                           className={`text-xs font-bold block mb-2 ${event.dateColorClass}`}
@@ -170,11 +171,11 @@ export default function TimelineSection() {
                       <div
                         className={`liquid-glass border border-white/10 rounded-2xl p-6 md:p-7 transition-all duration-300 transform hover:-translate-y-1 md:mr-auto max-w-md w-full text-left bg-black/50 backdrop-blur-xl shadow-[0_12px_40px_rgba(0,0,0,0.35)] ${
                           event.active
-                            ? "border-pink-500/40 pulse-card-pink"
+                            ? "border-orange-500/40 pulse-card-orange"
                             : index === timelineEvents.length - 1
                               ? "border-green-500/30"
                               : ""
-                        } hidden md:block`}
+                        } ${event.cardClass ?? ""} hidden md:block`}
                       >
                         <span
                           className={`text-xs md:text-sm font-bold block mb-2 ${event.dateColorClass}`}
