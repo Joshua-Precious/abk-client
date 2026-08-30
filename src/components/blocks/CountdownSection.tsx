@@ -63,7 +63,7 @@ export default function CountdownSection() {
             alt="Calendar"
             className="h-14 w-14 shrink-0 object-contain md:h-24 md:w-24"
           />
-          25th September, 2026
+          20th September, 2026
         </span>
       </div>
     </section>
