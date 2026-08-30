@@ -33,6 +33,10 @@ export default function AdminDashboard() {
     const [error, setError] = useState("");
     const [activeTab, setActiveTab] = useState<"confirmed" | "pending">("confirmed");
 
+    const [isSendingTest, setIsSendingTest] = useState(false);
+    const [isSendingLive, setIsSendingLive] = useState(false);
+    const [showLiveConfirmModal, setShowLiveConfirmModal] = useState(false);
+
     useEffect(() => {
         if (!isAuthenticated) return;
 
@@ -40,7 +44,7 @@ export default function AdminDashboard() {
             setIsLoading(true);
             try {
                 const token = localStorage.getItem("admin_token");
-                const API_URL = import.meta.env.VITE_API_URL;
+                const API_URL = import.meta.env.VITE_API_URL || "";
                 const response = await fetch(`${API_URL}/api/registrations`, {
                     headers: {
                         "Authorization": `Bearer ${token}`
@@ -81,7 +85,7 @@ export default function AdminDashboard() {
         setLoginError("");
 
         try {
-            const API_URL = import.meta.env.VITE_API_URL;
+            const API_URL = import.meta.env.VITE_API_URL || "";
             const response = await fetch(`${API_URL}/api/admin/login`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -123,7 +127,7 @@ export default function AdminDashboard() {
     const handleDownloadExcel = async () => {
         try {
             const token = localStorage.getItem("admin_token");
-            const API_URL = import.meta.env.VITE_API_URL;
+            const API_URL = import.meta.env.VITE_API_URL || "";
             const response = await fetch(`${API_URL}/api/registrations/download/excel`, {
                 headers: { "Authorization": `Bearer ${token}` }
             });
@@ -141,6 +145,61 @@ export default function AdminDashboard() {
         } catch (error) {
             console.error("Error downloading Excel:", error);
             toast.error("Error downloading Excel");
+        }
+    };
+
+    const handleSendTestEmail = async () => {
+        setIsSendingTest(true);
+        try {
+            const token = localStorage.getItem("admin_token");
+            const API_URL = import.meta.env.VITE_API_URL || "";
+            const response = await fetch(`${API_URL}/api/registrations/send-date-change-test`, {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                }
+            });
+
+            const data = await response.json();
+            if (!response.ok) {
+                throw new Error(data.error || "Failed to send test email update");
+            }
+
+            toast.success(data.message || "Test update emails sent successfully!");
+        } catch (err: any) {
+            console.error("Error sending test emails:", err);
+            toast.error(err.message || "Failed to send test update email");
+        } finally {
+            setIsSendingTest(false);
+        }
+    };
+
+    const handleSendLiveEmail = async () => {
+        setShowLiveConfirmModal(false);
+        setIsSendingLive(true);
+        try {
+            const token = localStorage.getItem("admin_token");
+            const API_URL = import.meta.env.VITE_API_URL || "";
+            const response = await fetch(`${API_URL}/api/registrations/send-date-change-live`, {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                }
+            });
+
+            const data = await response.json();
+            if (!response.ok) {
+                throw new Error(data.error || "Failed to send live email update");
+            }
+
+            toast.success(data.message || "Live update emails sent successfully to all registrations!");
+        } catch (err: any) {
+            console.error("Error sending live emails:", err);
+            toast.error(err.message || "Failed to send live update emails");
+        } finally {
+            setIsSendingLive(false);
         }
     };
 
@@ -270,7 +329,34 @@ export default function AdminDashboard() {
                                         </span>
                                     </div>
                                 </div>
-                                <div className="flex items-center gap-3">
+                                <div className="flex flex-wrap items-center gap-3">
+                                    <button
+                                        onClick={handleSendTestEmail}
+                                        disabled={isSendingTest}
+                                        className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 text-white/90 border border-white/10 hover:bg-[#f0b405]/10 hover:text-[#f0b405] hover:border-[#f0b405]/40 transition-all font-medium text-sm disabled:opacity-50"
+                                        title="Send test update email to test recipients"
+                                    >
+                                        {isSendingTest ? (
+                                            <Icon icon="lucide:loader-2" className="w-4 h-4 animate-spin text-[#f0b405]" />
+                                        ) : (
+                                            <Icon icon="lucide:flask-conical" className="w-4 h-4 text-[#f0b405]" />
+                                        )}
+                                        <span>Test Update Email</span>
+                                    </button>
+
+                                    <button
+                                        onClick={() => setShowLiveConfirmModal(true)}
+                                        disabled={isSendingLive}
+                                        className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#f0b405] text-[#00060e] font-bold text-sm hover:bg-[#f0b405]/90 shadow-lg shadow-[#f0b405]/20 transition-all disabled:opacity-50"
+                                        title="Send live update email to all registered teams"
+                                    >
+                                        {isSendingLive ? (
+                                            <Icon icon="lucide:loader-2" className="w-4 h-4 animate-spin" />
+                                        ) : (
+                                            <Icon icon="lucide:send" className="w-4 h-4" />
+                                        )}
+                                        <span>Live Update Email</span>
+                                    </button>
 
                                     <button
                                         onClick={handleDownloadExcel}
@@ -288,6 +374,47 @@ export default function AdminDashboard() {
                                     </button>
                                 </div>
                             </div>
+
+                            {showLiveConfirmModal && (
+                                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm section-fade-in">
+                                    <GlassyContainer className="max-w-md w-full rounded-3xl p-6 border border-white/20 shadow-2xl relative">
+                                        <div className="flex items-center justify-between mb-4">
+                                            <div className="flex items-center gap-3">
+                                                <div className="w-10 h-10 rounded-full bg-[#f0b405]/10 border border-[#f0b405]/30 flex items-center justify-center">
+                                                    <Icon icon="lucide:mail-warning" className="w-5 h-5 text-[#f0b405]" />
+                                                </div>
+                                                <h3 className="text-xl font-bold text-white">Send Live Update Email?</h3>
+                                            </div>
+                                            <button
+                                                onClick={() => setShowLiveConfirmModal(false)}
+                                                className="p-1 text-white/50 hover:text-white transition-colors"
+                                            >
+                                                <Icon icon="lucide:x" className="w-5 h-5" />
+                                            </button>
+                                        </div>
+                                        
+                                        <p className="text-white/80 text-sm mb-6 leading-relaxed">
+                                            This will send the <span className="text-[#f0b405] font-semibold">Main Event Date Change update email</span> to all confirmed and registered teams in the database. Are you sure you want to proceed?
+                                        </p>
+                                        
+                                        <div className="flex items-center justify-end gap-3">
+                                            <button
+                                                onClick={() => setShowLiveConfirmModal(false)}
+                                                className="px-4 py-2 rounded-xl text-sm font-medium text-white/70 hover:bg-white/10 transition-colors"
+                                            >
+                                                Cancel
+                                            </button>
+                                            <button
+                                                onClick={handleSendLiveEmail}
+                                                className="flex items-center gap-2 px-5 py-2 rounded-xl text-sm font-bold bg-[#f0b405] text-[#00060e] hover:bg-[#f0b405]/90 transition-all shadow-lg shadow-[#f0b405]/20"
+                                            >
+                                                <Icon icon="lucide:send" className="w-4 h-4" />
+                                                <span>Confirm & Send Live</span>
+                                            </button>
+                                        </div>
+                                    </GlassyContainer>
+                                </div>
+                            )}
 
                             <GlassyContainer className="rounded-3xl p-4 md:p-8 overflow-hidden">
                                 {isLoading ? (
