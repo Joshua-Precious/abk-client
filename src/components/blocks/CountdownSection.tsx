@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 
 export default function CountdownSection() {
-  // Target date: September 25, 2026
-  const targetDate = new Date("2026-09-25T18:00:00").getTime();
+  // Target date: September 20, 2026
+  const targetDate = new Date("2026-09-20T18:00:00").getTime();
 
   const [timeLeft, setTimeLeft] = useState({
     days: 0,

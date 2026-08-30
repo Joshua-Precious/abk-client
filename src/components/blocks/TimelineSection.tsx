@@ -38,22 +38,22 @@ const timelineEvents: TimelineEvent[] = [
     title: "Qualifiers Bootcamp",
     icon: "lucide:tv",
     side: "left",
-    active: true,
-    circleClass:
-      "bg-orange-500/20 border-orange-500 shadow-lg shadow-orange-500/20 animate-pulse",
-    iconClass: "text-orange-400",
-    dateColorClass: "text-orange-400",
-    cardClass: "pulse-card-orange border-orange-500/40",
+    circleClass: "bg-black/40 border-white/10 grayscale",
+    iconClass: "text-white/30",
+    dateColorClass: "text-white/30",
+    cardClass: "grayscale opacity-50",
   },
   {
-    date: "25th September, 2026",
+    date: "20th September, 2026",
     title: "Main Event",
     icon: "lucide:trophy",
     side: "right",
+    active: true,
     circleClass:
-      "bg-black/60 border-white/20 group-hover:bg-green-500/10 group-hover:border-green-500",
-    iconClass: "text-white/60 group-hover:text-green-400",
+      "bg-green-500/20 border-green-500 shadow-lg shadow-green-500/20 animate-pulse",
+    iconClass: "text-green-400",
     dateColorClass: "text-green-400",
+    cardClass: "pulse-card-orange border-green-500/40",
   },
 ];
 
