@@ -194,7 +194,7 @@ export default function AdminDashboard() {
                 throw new Error(data.error || "Failed to send live email update");
             }
 
-            toast.success(data.message || "Live update emails sent successfully to all registrations!");
+            toast.success(data.message || "Live update emails sent successfully to qualified teams!");
         } catch (err: any) {
             console.error("Error sending live emails:", err);
             toast.error(err.message || "Failed to send live update emails");
@@ -394,7 +394,7 @@ export default function AdminDashboard() {
                                         </div>
                                         
                                         <p className="text-white/80 text-sm mb-6 leading-relaxed">
-                                            This will send the <span className="text-[#f0b405] font-semibold">Main Event Date Change update email</span> to all confirmed and registered teams in the database. Are you sure you want to proceed?
+                                            This will send the <span className="text-[#f0b405] font-semibold">Main Event Date Change update email</span> to the 5 qualified teams. Are you sure you want to proceed?
                                         </p>
                                         
                                         <div className="flex items-center justify-end gap-3">
