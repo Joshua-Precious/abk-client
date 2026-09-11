@@ -13,7 +13,7 @@ export default function AppRoutes() {
     <Routes>
       <Route index element={<Home />} />
       <Route path="/about" element={<About />} />
-      <Route path="/merch" element={<Merch />} />
+      {/* <Route path="/merch" element={<Merch />} /> */}
       <Route path="/vendors" element={<Vendors />} />
       <Route path="/register" element={<Register />} />
       <Route path="/confirm-registration" element={<ConfirmRegistration />} />

@@ -37,7 +37,7 @@ export default function Header() {
   const navItems = [
     { label: "HOME", path: "/", action: navigateToHome },
     { label: "ABOUT", path: "/about", action: navigateToAbout },
-    { label: "MERCH", path: "/merch", action: navigateToMerch },
+    // { label: "MERCH", path: "/merch", action: navigateToMerch },
     { label: "VENDORS", path: "/vendors", action: navigateToVendors },
     { label: "FAQS", path: "/faq", action: navigateToFAQ },
   ];

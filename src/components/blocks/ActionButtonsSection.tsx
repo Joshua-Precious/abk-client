@@ -7,7 +7,7 @@ export default function ActionButtonsSection() {
     {
       label: "MERCH",
       sublabel: "OF THE ROYALS",
-      action: () => navigate("/merch"),
+      action: () => navigate("/"),
       bgClass: "bg-[#ff9900]",
     },
     {

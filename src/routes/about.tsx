@@ -263,15 +263,15 @@ export default function About() {
           </div>
         </section>
 
-        {/* SPONSOR ABK Button */}
-        <section className="flex justify-center mb-8">
+        {/* SPONSOR ABK Button - Hidden: no longer taking sponsors */}
+        {/* <section className="flex justify-center mb-8">
           <button
             className="relative group px-12 py-5 rounded-xl font-extrabold text-2xl md:text-3xl text-white tracking-widest overflow-hidden transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] cursor-pointer inline-flex items-center justify-center min-w-70 md:min-w-[320px] shadow-[0_0_20px_rgba(255,255,255,0.05)]"
             style={gradientButtonStyle}
           >
             SPONSOR ABK
           </button>
-        </section>
+        </section> */}
       </main>
 
       {/* LIGHTBOX MODAL */}
