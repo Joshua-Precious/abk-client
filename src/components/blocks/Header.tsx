@@ -23,10 +23,10 @@ export default function Header() {
     navigate("/about");
     setIsMobileMenuOpen(false);
   };
-  const navigateToMerch = () => {
-    navigate("/merch");
-    setIsMobileMenuOpen(false);
-  };
+  // const navigateToMerch = () => {
+  //   navigate("/merch");
+  //   setIsMobileMenuOpen(false);
+  // };
   const navigateToVendors = () => {
     navigate("/vendors");
     setIsMobileMenuOpen(false);

@@ -4,7 +4,7 @@ import Register from "./routes/register";
 import AdminDashboard from "./routes/admin";
 import FAQ from "./routes/faq";
 import About from "./routes/about";
-import Merch from "./routes/merch";
+// import Merch from "./routes/merch";
 import Vendors from "./routes/vendors";
 import ConfirmRegistration from "./routes/confirm";
 
