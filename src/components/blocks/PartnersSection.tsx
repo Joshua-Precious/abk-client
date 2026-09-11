@@ -85,55 +85,35 @@ const MEDIA_PARTNERS: SponsorItem[] = [
   },
 ];
 
-// Single Partner Logo Item (No cards, larger images, high-visibility typography, graceful fallback)
-function PartnerLogoItem({
-  partner,
-  size = "md",
-}: {
-  partner: SponsorItem;
-  size?: "lg" | "md" | "sm";
-}) {
+// Single Partner Logo Item (Uniform dimensions for all logos, clean alignment, graceful fallback)
+function PartnerLogoItem({ partner }: { partner: SponsorItem }) {
   const [hasError, setHasError] = useState(false);
-
-  const sizeClasses = {
-    lg: "h-36 sm:h-44 md:h-56 max-w-[280px] sm:max-w-[340px] md:max-w-[400px]",
-    md: "h-24 sm:h-32 md:h-40 max-w-[200px] sm:max-w-[260px] md:max-w-[300px]",
-    sm: "h-18 sm:h-24 md:h-32 max-w-[160px] sm:max-w-[200px] md:max-w-[240px]",
-  }[size];
 
   return (
     <div className="group flex flex-col items-center justify-center text-center transition-all duration-300 hover:scale-105 p-2 w-full">
-      {/* Logo container without cards */}
-      <div className={`flex items-center justify-center w-full ${sizeClasses}`}>
+      {/* Uniform Bounding Box for consistent dimensions across all logos */}
+      <div className="w-40 sm:w-48 md:w-56 h-20 sm:h-24 md:h-28 flex items-center justify-center">
         {!hasError ? (
           <img
             src={partner.logoUrl}
             alt={partner.name}
             onError={() => setHasError(true)}
-            className="max-h-full max-w-full object-contain filter drop-shadow-[0_6px_20px_rgba(0,0,0,0.7)] group-hover:drop-shadow-[0_10px_30px_rgba(255,204,0,0.35)] transition-all duration-300"
+            className="max-h-full max-w-full object-contain filter drop-shadow-[0_4px_16px_rgba(0,0,0,0.6)] group-hover:drop-shadow-[0_8px_24px_rgba(255,204,0,0.3)] transition-all duration-300"
             loading="lazy"
           />
         ) : (
-          <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-2xl bg-linear-to-br from-[#ffcc00]/20 to-orange-500/20 border-2 border-[#ffcc00]/50 flex items-center justify-center text-[#ffcc00] font-black tracking-widest text-base sm:text-lg md:text-xl shadow-[0_0_25px_rgba(255,204,0,0.2)]">
+          <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-linear-to-br from-[#ffcc00]/20 to-orange-500/20 border-2 border-[#ffcc00]/50 flex items-center justify-center text-[#ffcc00] font-black tracking-widest text-base sm:text-lg shadow-[0_0_25px_rgba(255,204,0,0.2)]">
             {partner.initials}
           </div>
         )}
       </div>
 
-      {/* Brand Name Label - High Visibility */}
-      <h4
-        className={`font-black text-white tracking-wider uppercase group-hover:text-[#ffcc00] transition-colors leading-tight drop-shadow-md ${
-          size === "lg"
-            ? "mt-4 text-base sm:text-lg md:text-xl"
-            : size === "md"
-              ? "mt-3.5 text-sm sm:text-base md:text-lg"
-              : "mt-3 text-xs sm:text-sm md:text-base"
-        }`}
-      >
+      {/* Brand Name Label - Uniform positioning & readable typography */}
+      <h4 className="mt-3 text-xs sm:text-sm md:text-base font-black text-white tracking-wider uppercase group-hover:text-[#ffcc00] transition-colors leading-tight drop-shadow-md">
         {partner.name}
       </h4>
       {partner.role && (
-        <p className="text-xs sm:text-sm font-bold text-[#ffcc00] tracking-wider uppercase mt-1 drop-shadow-sm">
+        <p className="text-xs font-bold text-[#ffcc00] tracking-wider uppercase mt-1 drop-shadow-sm">
           {partner.role}
         </p>
       )}
@@ -185,9 +165,9 @@ export default function PartnersSection() {
             <div className="h-0.5 grow bg-linear-to-l from-transparent to-[#ffcc00]/80" />
           </div>
 
-          {/* Large Title Sponsor Logo Showcase (No Card, Clean Shadow) */}
-          <div className="flex flex-col bg-white py-4 px-24 items-center justify-center group mb-4">
-            <div className="h-44 sm:h-60 md:h-72 lg:h-80 w-auto max-w-[90vw] md:max-w-2xl flex items-center justify-center p-2">
+          {/* Title Sponsor Logo Showcase (Moderated, balanced sizing) */}
+          <div className="flex flex-col bg-white py-3 sm:py-4 px-8 sm:px-16 md:px-20 rounded-2xl items-center justify-center group mb-4 shadow-md">
+            <div className="h-28 sm:h-36 md:h-44 w-auto max-w-[85vw] md:max-w-lg flex items-center justify-center p-1">
               {!poweredByError ? (
                 <img
                   src={POWERED_BY_SPONSOR.logoUrl}
@@ -197,7 +177,7 @@ export default function PartnersSection() {
                   loading="lazy"
                 />
               ) : (
-                <div className="w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-36 rounded-3xl bg-linear-to-br from-[#ffcc00] to-orange-500 text-black flex items-center justify-center font-black text-3xl sm:text-4xl shadow-lg">
+                <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-linear-to-br from-[#ffcc00] to-orange-500 text-black flex items-center justify-center font-black text-2xl sm:text-3xl shadow-lg">
                   {POWERED_BY_SPONSOR.initials}
                 </div>
               )}
@@ -206,7 +186,7 @@ export default function PartnersSection() {
         </div>
 
         {/* ========================================================= */}
-        {/* TIER 2: SUPPORTING PARTNERS (No Cards, Larger Logos)      */}
+        {/* TIER 2: SUPPORTING PARTNERS (Uniform Logo Dimensions)     */}
         {/* ========================================================= */}
         <div className="flex flex-col items-center">
           {/* Category Divider Header */}
@@ -221,13 +201,13 @@ export default function PartnersSection() {
           {/* 6 Supporting Partners Grid */}
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-8 sm:gap-12 md:gap-16 items-center justify-items-center w-full max-w-5xl">
             {SUPPORTING_PARTNERS.map((partner) => (
-              <PartnerLogoItem key={partner.name} partner={partner} size="md" />
+              <PartnerLogoItem key={partner.name} partner={partner} />
             ))}
           </div>
         </div>
 
         {/* ========================================================= */}
-        {/* TIER 3: MEDIA PARTNERS (No Cards, Larger Logos)           */}
+        {/* TIER 3: MEDIA PARTNERS (Uniform Logo Dimensions)          */}
         {/* ========================================================= */}
         <div className="flex flex-col items-center">
           {/* Category Divider Header */}
@@ -242,7 +222,7 @@ export default function PartnersSection() {
           {/* Media Partners Grid */}
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-8 sm:gap-12 md:gap-16 items-center justify-items-center w-full max-w-5xl">
             {MEDIA_PARTNERS.map((partner) => (
-              <PartnerLogoItem key={partner.name} partner={partner} size="sm" />
+              <PartnerLogoItem key={partner.name} partner={partner} />
             ))}
           </div>
         </div>

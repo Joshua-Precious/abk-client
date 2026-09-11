@@ -5,7 +5,7 @@ import CountdownSection from "../components/blocks/CountdownSection";
 import EventBannerSection from "../components/blocks/EventBannerSection";
 import TimelineSection from "../components/blocks/TimelineSection";
 import MasonryGridSection from "../components/blocks/MasonryGridSection";
-import ActionButtonsSection from "../components/blocks/ActionButtonsSection";
+// import ActionButtonsSection from "../components/blocks/ActionButtonsSection";
 import PartnersSection from "../components/blocks/PartnersSection";
 import Footer from "../components/blocks/Footer";
 
@@ -22,7 +22,7 @@ export default function Home() {
         <EventBannerSection />
         <TimelineSection />
         <MasonryGridSection />
-        <ActionButtonsSection />
+        {/* <ActionButtonsSection /> */}
         <PartnersSection />
       </main>
 
