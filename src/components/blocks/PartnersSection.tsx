@@ -240,7 +240,7 @@ export default function PartnersSection() {
           </div>
 
           {/* Media Partners Grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-10 md:gap-12 items-center justify-items-center w-full max-w-6xl">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-8 sm:gap-12 md:gap-16 items-center justify-items-center w-full max-w-5xl">
             {MEDIA_PARTNERS.map((partner) => (
               <PartnerLogoItem key={partner.name} partner={partner} size="sm" />
             ))}
