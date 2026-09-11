@@ -83,11 +83,6 @@ const MEDIA_PARTNERS: SponsorItem[] = [
     logoUrl: "/assets/sponsors/tvXYZ.webp",
     initials: "XYZ",
   },
-  {
-    name: "Callprint",
-    logoUrl: "/assets/sponsors/Callprint.webp",
-    initials: "CP",
-  },
 ];
 
 // Single Partner Logo Item (No cards, larger images, high-visibility typography, graceful fallback)
@@ -191,14 +186,14 @@ export default function PartnersSection() {
           </div>
 
           {/* Large Title Sponsor Logo Showcase (No Card, Clean Shadow) */}
-          <div className="flex flex-col items-center justify-center group mb-4">
+          <div className="flex flex-col bg-white py-4 px-24 items-center justify-center group mb-4">
             <div className="h-44 sm:h-60 md:h-72 lg:h-80 w-auto max-w-[90vw] md:max-w-2xl flex items-center justify-center p-2">
               {!poweredByError ? (
                 <img
                   src={POWERED_BY_SPONSOR.logoUrl}
                   alt={POWERED_BY_SPONSOR.name}
                   onError={() => setPoweredByError(true)}
-                  className="max-h-full max-w-full object-contain filter drop-shadow-[0_4px_16px_rgba(0,0,0,0.6)] group-hover:scale-105 transition-transform duration-300"
+                  className="max-h-full max-w-full object-contain filter group-hover:scale-105 transition-transform duration-300"
                   loading="lazy"
                 />
               ) : (
@@ -207,14 +202,6 @@ export default function PartnersSection() {
                 </div>
               )}
             </div>
-
-            {/* Title Text */}
-            <h3 className="text-3xl sm:text-5xl md:text-6xl font-black text-white tracking-wider uppercase drop-shadow-lg mt-4">
-              {POWERED_BY_SPONSOR.name}
-            </h3>
-            <p className="text-base sm:text-lg md:text-xl font-bold text-[#ffcc00] tracking-widest uppercase mt-1 drop-shadow">
-              {POWERED_BY_SPONSOR.role}
-            </p>
           </div>
         </div>
 
