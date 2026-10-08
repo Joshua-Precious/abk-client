@@ -56,14 +56,14 @@ export default function Header() {
         </div>
 
         {/* Desktop Nav */}
-        <div className="hidden md:flex items-center gap-1 lg:gap-3 text-xs lg:text-sm">
+        <div className="hidden md:flex items-center gap-1 lg:gap-3 text-sm lg:text-base">
           {navItems.map((item) => (
             <button
               key={item.label}
               onClick={item.action}
-              className={`px-4 py-1.6 font-semibold tracking-wide ${
+              className={`px-4 py-1.6 font-bold tracking-wider ${
                 currentPage === item.path
-                  ? "text-white border-b-2 border-white font-bold"
+                  ? "text-white border-b-2 border-white"
                   : "text-white/70 hover:border-b-2 hover:border-white/10 hover:cursor-pointer"
               }`}
             >
@@ -93,7 +93,7 @@ export default function Header() {
             <button
               key={item.label}
               onClick={item.action}
-              className={`px-5 py-2 text-left text-sm font-semibold uppercase tracking-wider transition-colors ${
+              className={`px-5 py-2.5 text-left text-base font-bold uppercase tracking-wider transition-colors ${
                 currentPage === item.path
                   ? "text-white bg-white/5"
                   : "text-white/70"

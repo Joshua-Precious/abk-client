@@ -27,7 +27,11 @@ export default function GalleryPage() {
       .catch((caught: unknown) => {
         if (!isActive) return;
         if ((caught as Error)?.name === "AbortError") return;
-        setError(caught instanceof Error ? caught.message : "Could not load the gallery");
+        setError(
+          caught instanceof Error
+            ? caught.message
+            : "Could not load the gallery",
+        );
       })
       .finally(() => {
         if (isActive) setIsLoading(false);
@@ -44,21 +48,23 @@ export default function GalleryPage() {
       <ScrollToTop />
       <Header />
 
-      <main className="pt-20 md:pt-24 grow relative z-10 container mx-auto px-4 pb-20">
-        <div className="text-center mb-12 section-fade-in">
-          <h1 className="text-6xl md:text-8xl font-bold text-[#f0b405] tracking-wider uppercase mb-4">
+      <main className="pt-28 md:pt-30 grow relative z-10 container mx-auto px-4 pb-20">
+        <div className="text-center mb-8 md:mb-10 section-fade-in">
+          <h1 className="text-2xl md:text-4xl font-bold text-[#f0b405] tracking-wider uppercase mb-3">
             Gallery
           </h1>
-          <p className="text-white/80 text-lg md:text-2xl font-semibold uppercase tracking-widest max-w-2xl mx-auto leading-relaxed">
+          <p className="text-white/80 text-sm md:text-base font-semibold uppercase tracking-widest max-w-2xl mx-auto leading-relaxed">
             Relive the moments from Accra&apos;s Boogie King
           </p>
-          <div className="w-24 h-1 bg-[#f0b405] mx-auto mt-6 rounded-full" />
         </div>
 
         {isLoading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
             {Array.from({ length: 6 }, (_, index) => (
-              <div key={index} className="rounded-2xl border border-white/10 bg-white/5 p-4">
+              <div
+                key={index}
+                className="rounded-2xl border border-white/10 bg-white/5 p-4"
+              >
                 <div className="mb-4 aspect-square animate-pulse rounded-xl bg-white/10" />
                 <div className="mx-auto h-5 w-2/3 animate-pulse rounded bg-white/10" />
                 <div className="mx-auto mt-2 h-3 w-1/3 animate-pulse rounded bg-white/5" />
@@ -67,7 +73,10 @@ export default function GalleryPage() {
           </div>
         ) : error ? (
           <div className="liquid-glass mx-auto flex max-w-md flex-col items-center gap-4 rounded-2xl border border-red-500/20 px-6 py-12 text-center section-fade-in">
-            <Icon icon="lucide:alert-circle" className="h-12 w-12 text-red-400" />
+            <Icon
+              icon="lucide:alert-circle"
+              className="h-12 w-12 text-red-400"
+            />
             <div>
               <h2 className="text-xl font-bold uppercase tracking-wider text-white">
                 Gallery unavailable
@@ -89,7 +98,8 @@ export default function GalleryPage() {
               Coming soon
             </h2>
             <p className="text-sm text-white/60">
-              The gallery for this year is being uploaded. Please check back shortly.
+              The gallery for this year is being uploaded. Please check back
+              shortly.
             </p>
           </div>
         ) : (

@@ -7,7 +7,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Icon } from "@iconify/react";
 import { useInfiniteMedia } from "../../hooks/useInfiniteMedia";
-import { downloadSelectionZip, MAX_ZIP_SELECTION } from "../../services/gallery.api";
+import { downloadSelectionZipWithProgress, MAX_ZIP_SELECTION } from "../../services/gallery.api";
+import type { ZipDownloadProgress } from "../../services/gallery.api";
 import LazyVideo from "./LazyVideo";
 import MediaLightbox from "./MediaLightbox";
 import type { GalleryAlbum, GalleryMedia, GalleryMediaType } from "../../types/gallery";
@@ -25,6 +26,39 @@ const formatDuration = (seconds: number | null): string | null => {
   const total = Math.round(seconds);
   const minutes = Math.floor(total / 60);
   return `${minutes}:${String(total % 60).padStart(2, "0")}`;
+};
+
+/** `1048576` -> `1.0 MB`, for the download progress readout. */
+const formatBytes = (bytes: number): string => {
+  if (!Number.isFinite(bytes) || bytes < 0) return "0 B";
+  if (bytes < 1024) return `${Math.round(bytes)} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)} KB`;
+  if (bytes < 1024 * 1024 * 1024) return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+  return `${(bytes / (1024 * 1024 * 1024)).toFixed(2)} GB`;
+};
+
+/** One-line human summary of a running ZIP download (`Preparing 3/12`, `12.4 of ~38 MB`). */
+const progressLabel = (progress: ZipDownloadProgress | null): string | null => {
+  if (!progress || progress.phase === "done") return null;
+  if (progress.phase === "preparing" && progress.filesTotal !== null) {
+    return `Preparing ${progress.filesDone}/${progress.filesTotal}`;
+  }
+  if (progress.bytesTotal !== null && progress.bytesTotal > 0) {
+    return `${formatBytes(progress.bytesReceived)} of ~${formatBytes(progress.bytesTotal)}`;
+  }
+  return `${formatBytes(progress.bytesReceived)} received`;
+};
+
+/** 0-100 for the determinate bar, or null while nothing measurable has arrived. */
+const progressPercent = (progress: ZipDownloadProgress | null): number | null => {
+  if (!progress || progress.phase === "done") return null;
+  if (progress.bytesTotal !== null && progress.bytesTotal > 0 && progress.bytesReceived > 0) {
+    return Math.min(99, (progress.bytesReceived / progress.bytesTotal) * 100);
+  }
+  if (progress.filesTotal !== null && progress.filesTotal > 0 && progress.filesDone > 0) {
+    return Math.min(99, (progress.filesDone / progress.filesTotal) * 100);
+  }
+  return null;
 };
 
 /** Saves a Blob under a filename, the same way the admin export does. */
@@ -165,6 +199,7 @@ export default function MediaGrid({ album }: { album: GalleryAlbum }) {
   const [selectMode, setSelectMode] = useState(false);
   const [selection, setSelection] = useState<Set<string>>(new Set());
   const [isPreparing, setIsPreparing] = useState(false);
+  const [zipProgress, setZipProgress] = useState<ZipDownloadProgress | null>(null);
   const [downloadError, setDownloadError] = useState<string | null>(null);
   const sentinelRef = useRef<HTMLDivElement | null>(null);
 
@@ -211,9 +246,12 @@ export default function MediaGrid({ album }: { album: GalleryAlbum }) {
   const handleDownloadSelection = async () => {
     if (selectedCount === 0 || isPreparing) return;
     setIsPreparing(true);
+    setZipProgress(null);
     setDownloadError(null);
     try {
-      const blob = await downloadSelectionZip([...selection]);
+      const blob = await downloadSelectionZipWithProgress([...selection], {
+        onProgress: setZipProgress,
+      });
       saveBlob(blob, `ABK-${selectedCount}${selectedCount === 1 ? "-photo" : "-photos"}.zip`);
     } catch (caught) {
       setDownloadError(
@@ -221,8 +259,12 @@ export default function MediaGrid({ album }: { album: GalleryAlbum }) {
       );
     } finally {
       setIsPreparing(false);
+      setZipProgress(null);
     }
   };
+
+  const downloadLabel = progressLabel(zipProgress);
+  const downloadPercent = progressPercent(zipProgress);
 
   // Fetch the next page well before the user reaches the bottom of the grid.
   useEffect(() => {
@@ -420,7 +462,7 @@ export default function MediaGrid({ album }: { album: GalleryAlbum }) {
                 ) : (
                   <Icon icon="lucide:folder-down" className="h-4 w-4" />
                 )}
-                {isPreparing ? "Preparing ZIP" : `Download ${selectedCount || ""}`.trim()}
+                {isPreparing ? (downloadLabel ?? "Preparing ZIP") : `Download ${selectedCount || ""}`.trim()}
               </button>
               <button
                 type="button"
@@ -432,6 +474,25 @@ export default function MediaGrid({ album }: { album: GalleryAlbum }) {
               </button>
             </div>
           </div>
+          {isPreparing && (
+            <div className="mx-auto mt-2 max-w-5xl" aria-live="polite">
+              <div className="h-1 overflow-hidden rounded-full bg-white/10">
+                {downloadPercent !== null ? (
+                  <div
+                    className="h-full rounded-full bg-[#f0b405] transition-[width] duration-300"
+                    style={{ width: `${downloadPercent}%` }}
+                  />
+                ) : (
+                  <div className="h-full w-1/3 animate-pulse rounded-full bg-[#f0b405]/70" />
+                )}
+              </div>
+              {downloadLabel && (
+                <p className="mt-1 text-center text-[10px] font-bold uppercase tracking-widest text-white/60">
+                  {downloadLabel}
+                </p>
+              )}
+            </div>
+          )}
           {downloadError && (
             <p className="mx-auto mt-2 max-w-5xl text-center text-[11px] font-semibold uppercase tracking-wider text-red-300">
               {downloadError}
@@ -459,6 +520,7 @@ export default function MediaGrid({ album }: { album: GalleryAlbum }) {
           selectedCount={selectedCount}
           onDownloadSelected={handleDownloadSelection}
           isPreparingDownload={isPreparing}
+          downloadProgressLabel={downloadLabel}
           downloadError={downloadError}
         />
       )}

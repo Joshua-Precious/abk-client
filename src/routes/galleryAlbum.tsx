@@ -41,7 +41,11 @@ export default function GalleryAlbumPage() {
           setNotFound(true);
           return;
         }
-        setError(caught instanceof Error ? caught.message : "Could not load this album");
+        setError(
+          caught instanceof Error
+            ? caught.message
+            : "Could not load this album",
+        );
       })
       .finally(() => {
         if (isActive) setIsLoading(false);
@@ -58,17 +62,7 @@ export default function GalleryAlbumPage() {
       <ScrollToTop />
       <Header />
 
-      <main className="pt-20 md:pt-24 grow relative z-10 container mx-auto px-4 pb-20">
-        <div className="mb-6 flex justify-center">
-          <Link
-            to="/gallery"
-            className="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-widest text-white/60 transition-colors hover:text-[#f0b405]"
-          >
-            <Icon icon="lucide:arrow-left" className="h-4 w-4" />
-            Back to albums
-          </Link>
-        </div>
-
+      <main className="pt-28 md:pt-30 grow relative z-10 container mx-auto px-4 pb-20">
         {isLoading ? (
           <>
             <div className="mx-auto mb-12 max-w-2xl text-center">
@@ -77,7 +71,10 @@ export default function GalleryAlbumPage() {
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
               {Array.from({ length: 8 }, (_, index) => (
-                <div key={index} className="aspect-square animate-pulse rounded-xl bg-white/10" />
+                <div
+                  key={index}
+                  className="aspect-square animate-pulse rounded-xl bg-white/10"
+                />
               ))}
             </div>
           </>
@@ -101,7 +98,10 @@ export default function GalleryAlbumPage() {
           </div>
         ) : error || !album ? (
           <div className="liquid-glass mx-auto flex max-w-md flex-col items-center gap-4 rounded-2xl border border-red-500/20 px-6 py-12 text-center section-fade-in">
-            <Icon icon="lucide:alert-circle" className="h-12 w-12 text-red-400" />
+            <Icon
+              icon="lucide:alert-circle"
+              className="h-12 w-12 text-red-400"
+            />
             <div>
               <h1 className="text-2xl font-bold uppercase tracking-wider text-white">
                 Album unavailable
@@ -120,23 +120,36 @@ export default function GalleryAlbumPage() {
           </div>
         ) : (
           <div className="section-fade-in">
-            <div className="mx-auto mb-6 max-w-2xl text-center">
-              <h1 className="text-5xl md:text-7xl font-bold text-[#f0b405] tracking-wider uppercase mb-3">
-                {album.name}
-              </h1>
+            <div className="mx-auto mb-5 max-w-5xl">
+              <div className="flex items-center justify-between gap-3">
+                <Link
+                  to="/gallery"
+                  className="inline-flex shrink-0 items-center gap-2 text-xs font-extrabold uppercase tracking-widest text-white/60 transition-colors hover:text-[#f0b405]"
+                >
+                  <Icon icon="lucide:arrow-left" className="h-4 w-4" />
+                  Back to albums
+                </Link>
+                <h1
+                  title={album.name}
+                  className="min-w-0 truncate text-right text-2xl md:text-3xl font-bold text-[#f0b405] tracking-wider uppercase"
+                >
+                  {album.name}
+                </h1>
+              </div>
               {album.description && (
-                <p className="text-white/75 text-sm md:text-base font-semibold uppercase tracking-wide">
+                <p className="mt-2 text-center text-white/75 text-xs md:text-sm font-semibold uppercase tracking-wide">
                   {album.description}
                 </p>
               )}
-              <p className="mt-3 text-xs font-bold uppercase tracking-widest text-white/50">
+              <p className="mt-2 text-center text-xs font-bold uppercase tracking-widest text-white/50">
                 {album.mediaCount} {album.mediaCount === 1 ? "item" : "items"}
                 {album.videoCount > 0
                   ? ` · ${album.videoCount} ${album.videoCount === 1 ? "video" : "videos"}`
                   : ""}
-                {album.eventYear ? ` · ABK ${String(album.eventYear).slice(2)}` : ""}
+                {album.eventYear
+                  ? ` · ABK ${String(album.eventYear).slice(2)}`
+                  : ""}
               </p>
-              <div className="w-24 h-1 bg-[#f0b405] mx-auto mt-6 rounded-full" />
             </div>
 
             <MediaGrid album={album} />

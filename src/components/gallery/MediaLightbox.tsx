@@ -21,6 +21,8 @@ interface MediaLightboxProps {
   selectedCount?: number;
   onDownloadSelected?: () => void;
   isPreparingDownload?: boolean;
+  /** Live one-liner (`Preparing 3/12`, `12.4 of ~38 MB`) while the ZIP builds. */
+  downloadProgressLabel?: string | null;
   downloadError?: string | null;
 }
 
@@ -51,6 +53,7 @@ export default function MediaLightbox({
   selectedCount = 0,
   onDownloadSelected,
   isPreparingDownload = false,
+  downloadProgressLabel = null,
   downloadError = null,
 }: MediaLightboxProps) {
   const total = items.length;
@@ -252,7 +255,11 @@ export default function MediaLightbox({
               ) : (
                 <Icon icon="lucide:folder-down" className="h-4 w-4" />
               )}
-              <span className="hidden sm:inline">Download {selectedCount}</span>
+              <span className="hidden sm:inline">
+                {isPreparingDownload && downloadProgressLabel
+                  ? downloadProgressLabel
+                  : `Download ${selectedCount}`}
+              </span>
               <span className="sm:hidden">{selectedCount}</span>
             </button>
           )}
