@@ -62,7 +62,7 @@ export default function About() {
     <div className="flex flex-col min-h-screen text-neutral-content">
       <Header />
 
-      <main className="pt-28 md:pt-36 grow relative z-10 container mx-auto px-4 pb-20">
+      <main className="pt-20 md:pt-24 grow relative z-10 container mx-auto px-4 pb-20">
         {/* ABOUT Title */}
         <div className="text-center mb-12 animate-fade-in">
           <h1 className="text-6xl md:text-8xl font-bold text-[#f0b405] tracking-wider uppercase mb-2">

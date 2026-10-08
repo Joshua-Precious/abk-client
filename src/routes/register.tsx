@@ -7,7 +7,7 @@ export default function Register() {
     <div className="flex flex-col min-h-screen text-neutral-content">
       <Header />
 
-      <main className="pt-24 md:pt-28 grow relative z-10">
+      <main className="pt-20 md:pt-24 grow relative z-10">
         <div className="container mx-auto px-4 pb-16 md:pb-20">
           <GlassyContainer className="max-w-2xl mx-auto text-center py-16 md:py-24">
             <h1 className="text-4xl md:text-5xl font-bold uppercase tracking-wider mb-4">

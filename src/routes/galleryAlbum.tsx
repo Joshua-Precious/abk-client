@@ -58,7 +58,7 @@ export default function GalleryAlbumPage() {
       <ScrollToTop />
       <Header />
 
-      <main className="pt-28 md:pt-36 grow relative z-10 container mx-auto px-4 pb-20">
+      <main className="pt-20 md:pt-24 grow relative z-10 container mx-auto px-4 pb-20">
         <div className="mb-6 flex justify-center">
           <Link
             to="/gallery"
@@ -75,8 +75,8 @@ export default function GalleryAlbumPage() {
               <div className="mx-auto h-12 w-2/3 animate-pulse rounded bg-white/10" />
               <div className="mx-auto mt-4 h-4 w-1/3 animate-pulse rounded bg-white/5" />
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-4">
-              {Array.from({ length: 12 }, (_, index) => (
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
+              {Array.from({ length: 8 }, (_, index) => (
                 <div key={index} className="aspect-square animate-pulse rounded-xl bg-white/10" />
               ))}
             </div>

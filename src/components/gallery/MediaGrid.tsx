@@ -1,10 +1,13 @@
 /**
  * Album media grid: 30-40 thumbnails per page, lazy loaded, mobile first.
- * Originals are only ever fetched through the lightbox download action.
+ * Originals are only ever fetched through an explicit download action, and a
+ * multi-select download is packaged server-side into one ZIP.
  */
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { Icon } from "@iconify/react";
 import { useInfiniteMedia } from "../../hooks/useInfiniteMedia";
+import { downloadSelectionZip, MAX_ZIP_SELECTION } from "../../services/gallery.api";
 import LazyVideo from "./LazyVideo";
 import MediaLightbox from "./MediaLightbox";
 import type { GalleryAlbum, GalleryMedia, GalleryMediaType } from "../../types/gallery";
@@ -24,6 +27,18 @@ const formatDuration = (seconds: number | null): string | null => {
   return `${minutes}:${String(total % 60).padStart(2, "0")}`;
 };
 
+/** Saves a Blob under a filename, the same way the admin export does. */
+const saveBlob = (blob: Blob, filename: string) => {
+  const url = window.URL.createObjectURL(blob);
+  const anchor = document.createElement("a");
+  anchor.href = url;
+  anchor.download = filename;
+  document.body.appendChild(anchor);
+  anchor.click();
+  anchor.remove();
+  window.URL.revokeObjectURL(url);
+};
+
 function SkeletonTiles({ count }: { count: number }) {
   return (
     <>
@@ -37,13 +52,25 @@ function SkeletonTiles({ count }: { count: number }) {
   );
 }
 
-function MediaTile({ media, onOpen }: { media: GalleryMedia; onOpen: () => void }) {
+interface MediaTileProps {
+  media: GalleryMedia;
+  onOpen: () => void;
+  selectMode: boolean;
+  selected: boolean;
+  onToggle: () => void;
+}
+
+function MediaTile({ media, onOpen, selectMode, selected, onToggle }: MediaTileProps) {
   const [failed, setFailed] = useState(false);
   const duration = formatDuration(media.duration);
 
   if (media.type === "VIDEO") {
     return (
-      <div className="relative aspect-square rounded-xl overflow-hidden border border-white/10 bg-black/40">
+      <div
+        className={`relative aspect-square rounded-xl overflow-hidden border bg-black/40 ${
+          selected ? "border-[#f0b405]" : "border-white/10"
+        }`}
+      >
         <LazyVideo
           src={media.streamUrl ?? ""}
           poster={media.posterUrl}
@@ -54,6 +81,20 @@ function MediaTile({ media, onOpen }: { media: GalleryMedia; onOpen: () => void 
             {duration}
           </span>
         )}
+        {selectMode && (
+          <button
+            type="button"
+            onClick={onToggle}
+            aria-label={selected ? `Deselect ${media.filename}` : `Select ${media.filename}`}
+            aria-pressed={selected}
+            className="absolute right-2 top-2 z-10 flex h-7 w-7 items-center justify-center rounded-full border border-white/30 bg-black/70 text-white"
+          >
+            <Icon
+              icon={selected ? "lucide:check" : "lucide:plus"}
+              className="h-4 w-4"
+            />
+          </button>
+        )}
       </div>
     );
   }
@@ -63,9 +104,18 @@ function MediaTile({ media, onOpen }: { media: GalleryMedia; onOpen: () => void 
   return (
     <button
       type="button"
-      onClick={onOpen}
-      aria-label={`Open ${media.filename}`}
-      className="group relative block aspect-square w-full cursor-pointer overflow-hidden rounded-xl border border-white/10 bg-neutral/40"
+      onClick={selectMode ? onToggle : onOpen}
+      aria-pressed={selectMode ? selected : undefined}
+      aria-label={
+        selectMode
+          ? selected
+            ? `Deselect ${media.filename}`
+            : `Select ${media.filename}`
+          : `Open ${media.filename}`
+      }
+      className={`group relative block aspect-square w-full cursor-pointer overflow-hidden rounded-xl border bg-neutral/40 ${
+        selected ? "border-[#f0b405] ring-2 ring-[#f0b405]/70" : "border-white/10"
+      }`}
     >
       {showImage ? (
         <img
@@ -86,9 +136,25 @@ function MediaTile({ media, onOpen }: { media: GalleryMedia; onOpen: () => void 
           </span>
         </div>
       )}
-      <span className="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 transition-opacity group-hover:opacity-100">
-        <Icon icon="lucide:maximize-2" className="w-5 h-5 text-white" />
-      </span>
+
+      {selectMode ? (
+        <span
+          className={`pointer-events-none absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-full border ${
+            selected
+              ? "border-[#f0b405] bg-[#f0b405] text-[#00060e]"
+              : "border-white/40 bg-black/60 text-white/70"
+          }`}
+        >
+          <Icon
+            icon={selected ? "lucide:check" : "lucide:circle"}
+            className="h-4 w-4"
+          />
+        </span>
+      ) : (
+        <span className="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 transition-opacity group-hover:opacity-100">
+          <Icon icon="lucide:maximize-2" className="w-5 h-5 text-white" />
+        </span>
+      )}
     </button>
   );
 }
@@ -96,6 +162,10 @@ function MediaTile({ media, onOpen }: { media: GalleryMedia; onOpen: () => void 
 export default function MediaGrid({ album }: { album: GalleryAlbum }) {
   const [filter, setFilter] = useState<Filter>("ALL");
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const [selectMode, setSelectMode] = useState(false);
+  const [selection, setSelection] = useState<Set<string>>(new Set());
+  const [isPreparing, setIsPreparing] = useState(false);
+  const [downloadError, setDownloadError] = useState<string | null>(null);
   const sentinelRef = useRef<HTMLDivElement | null>(null);
 
   const { items, isLoading, isLoadingMore, error, hasMore, loadMore, retry } = useInfiniteMedia(
@@ -105,10 +175,53 @@ export default function MediaGrid({ album }: { album: GalleryAlbum }) {
   );
 
   const showFilter = album.imageCount > 0 && album.videoCount > 0;
+  const selectedCount = selection.size;
+  const atSelectionLimit = selectedCount >= MAX_ZIP_SELECTION;
 
   const handleFilter = (next: Filter) => {
     setFilter(next);
     setOpenIndex(null);
+  };
+
+  const toggleSelected = useCallback((id: string) => {
+    setDownloadError(null);
+    setSelection((current) => {
+      const next = new Set(current);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        if (next.size >= MAX_ZIP_SELECTION) return current;
+        next.add(id);
+      }
+      return next;
+    });
+  }, []);
+
+  const selectLoaded = () => {
+    setDownloadError(null);
+    setSelection(new Set(items.slice(0, MAX_ZIP_SELECTION).map((media) => media.id)));
+  };
+
+  const exitSelectMode = () => {
+    setSelectMode(false);
+    setSelection(new Set());
+    setDownloadError(null);
+  };
+
+  const handleDownloadSelection = async () => {
+    if (selectedCount === 0 || isPreparing) return;
+    setIsPreparing(true);
+    setDownloadError(null);
+    try {
+      const blob = await downloadSelectionZip([...selection]);
+      saveBlob(blob, `ABK-${selectedCount}${selectedCount === 1 ? "-photo" : "-photos"}.zip`);
+    } catch (caught) {
+      setDownloadError(
+        caught instanceof Error ? caught.message : "Could not prepare the download",
+      );
+    } finally {
+      setIsPreparing(false);
+    }
   };
 
   // Fetch the next page well before the user reaches the bottom of the grid.
@@ -129,8 +242,8 @@ export default function MediaGrid({ album }: { album: GalleryAlbum }) {
 
   return (
     <section className="w-full">
-      {showFilter && (
-        <div className="mb-6 flex justify-center md:justify-start">
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+        {showFilter ? (
           <div className="flex rounded-full border border-white/10 bg-white/5 p-1">
             {FILTERS.map((option) => (
               <button
@@ -147,8 +260,42 @@ export default function MediaGrid({ album }: { album: GalleryAlbum }) {
               </button>
             ))}
           </div>
-        </div>
-      )}
+        ) : (
+          <span />
+        )}
+
+        {items.length > 0 && (
+          <div className="flex items-center gap-2">
+            {selectMode ? (
+              <>
+                <button
+                  type="button"
+                  onClick={selectLoaded}
+                  className="cursor-pointer rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-[11px] font-bold uppercase tracking-widest text-white/80 transition-colors hover:bg-white/10"
+                >
+                  Select all loaded
+                </button>
+                <button
+                  type="button"
+                  onClick={exitSelectMode}
+                  className="cursor-pointer rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-[11px] font-bold uppercase tracking-widest text-white/80 transition-colors hover:bg-white/10"
+                >
+                  Cancel
+                </button>
+              </>
+            ) : (
+              <button
+                type="button"
+                onClick={() => setSelectMode(true)}
+                className="flex cursor-pointer items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-[11px] font-bold uppercase tracking-widest text-white/80 transition-colors hover:bg-white/10"
+              >
+                <Icon icon="lucide:check-square" className="h-4 w-4" />
+                Select
+              </button>
+            )}
+          </div>
+        )}
+      </div>
 
       {isLoading ? (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-4">
@@ -181,7 +328,14 @@ export default function MediaGrid({ album }: { album: GalleryAlbum }) {
         <>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-4">
             {items.map((media, index) => (
-              <MediaTile key={media.id} media={media} onOpen={() => setOpenIndex(index)} />
+              <MediaTile
+                key={media.id}
+                media={media}
+                onOpen={() => setOpenIndex(index)}
+                selectMode={selectMode}
+                selected={selection.has(media.id)}
+                onToggle={() => toggleSelected(media.id)}
+              />
             ))}
           </div>
 
@@ -235,6 +389,60 @@ export default function MediaGrid({ album }: { album: GalleryAlbum }) {
 
       <div ref={sentinelRef} className="h-10" aria-hidden="true" />
 
+      {/*
+        Selection bar: pinned to the bottom of the screen so the action stays
+        reachable in a long album. Rendered through a portal into `document.body`
+        because the album page wraps this grid in `.section-fade-in`, whose
+        animated `transform` makes that ancestor a containing block - an inline
+        `position: fixed` bar was laid out at the bottom of the section instead
+        of the viewport, thousands of pixels below the fold.
+      */}
+      {selectMode && createPortal(
+        <div className="fixed inset-x-0 bottom-0 z-[150] border-t border-white/10 bg-[#0f0f13]/95 px-4 py-3 backdrop-blur-md">
+          <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-3">
+            <p className="text-xs font-bold uppercase tracking-widest text-white/80">
+              {selectedCount} selected
+              {atSelectionLimit && (
+                <span className="ml-2 text-[#f0b405]">
+                  (max {MAX_ZIP_SELECTION} per download)
+                </span>
+              )}
+            </p>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={handleDownloadSelection}
+                disabled={selectedCount === 0 || isPreparing}
+                className="flex cursor-pointer items-center gap-2 rounded-full bg-[#f0b405] px-4 py-2 text-[11px] font-extrabold uppercase tracking-widest text-[#00060e] transition-transform hover:scale-105 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                {isPreparing ? (
+                  <Icon icon="lucide:loader-2" className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Icon icon="lucide:folder-down" className="h-4 w-4" />
+                )}
+                {isPreparing ? "Preparing ZIP" : `Download ${selectedCount || ""}`.trim()}
+              </button>
+              <button
+                type="button"
+                onClick={() => setSelection(new Set())}
+                disabled={selectedCount === 0}
+                className="cursor-pointer rounded-full border border-white/15 bg-white/5 px-4 py-2 text-[11px] font-bold uppercase tracking-widest text-white/80 transition-colors hover:bg-white/10 disabled:opacity-40"
+              >
+                Clear
+              </button>
+            </div>
+          </div>
+          {downloadError && (
+            <p className="mx-auto mt-2 max-w-5xl text-center text-[11px] font-semibold uppercase tracking-wider text-red-300">
+              {downloadError}
+            </p>
+          )}
+        </div>,
+        document.body,
+      )}
+
+      <div className={selectMode ? "h-24" : undefined} aria-hidden="true" />
+
       {openIndex !== null && items[openIndex] && (
         <MediaLightbox
           items={items}
@@ -243,6 +451,15 @@ export default function MediaGrid({ album }: { album: GalleryAlbum }) {
           onNavigate={setOpenIndex}
           hasMore={hasMore}
           onRequestMore={loadMore}
+          isSelected={selection.has(items[openIndex].id)}
+          onToggleSelected={() => {
+            setSelectMode(true);
+            toggleSelected(items[openIndex].id);
+          }}
+          selectedCount={selectedCount}
+          onDownloadSelected={handleDownloadSelection}
+          isPreparingDownload={isPreparing}
+          downloadError={downloadError}
         />
       )}
     </section>

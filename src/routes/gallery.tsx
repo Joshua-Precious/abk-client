@@ -44,7 +44,7 @@ export default function GalleryPage() {
       <ScrollToTop />
       <Header />
 
-      <main className="pt-28 md:pt-36 grow relative z-10 container mx-auto px-4 pb-20">
+      <main className="pt-20 md:pt-24 grow relative z-10 container mx-auto px-4 pb-20">
         <div className="text-center mb-12 section-fade-in">
           <h1 className="text-6xl md:text-8xl font-bold text-[#f0b405] tracking-wider uppercase mb-4">
             Gallery
@@ -56,7 +56,7 @@ export default function GalleryPage() {
         </div>
 
         {isLoading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
             {Array.from({ length: 6 }, (_, index) => (
               <div key={index} className="rounded-2xl border border-white/10 bg-white/5 p-4">
                 <div className="mb-4 aspect-square animate-pulse rounded-xl bg-white/10" />

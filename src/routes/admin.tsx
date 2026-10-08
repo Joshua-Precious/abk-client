@@ -207,7 +207,7 @@ export default function AdminDashboard() {
         <div className="flex flex-col min-h-screen text-neutral-content">
             <Header />
 
-            <main className="pt-28 md:pt-36 grow relative z-10">
+            <main className="pt-20 md:pt-24 grow relative z-10">
                 {!isAuthenticated ? (
                     <div className="container mx-auto px-4 pb-20">
                         <div className="text-center mb-12 section-fade-in">

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import type { TouchEvent } from "react";
+import { createPortal } from "react-dom";
 import { Icon } from "@iconify/react";
 import type { GalleryMedia } from "../../types/gallery";
 
@@ -12,6 +13,15 @@ interface MediaLightboxProps {
   hasMore?: boolean;
   /** Asks the parent to fetch the next page (called before the user runs out). */
   onRequestMore?: () => void;
+  /** Whether the visible item is part of the multi-select download. */
+  isSelected?: boolean;
+  /** Adds/removes the visible item from the multi-select download. */
+  onToggleSelected?: () => void;
+  /** How many items the multi-select download currently holds. */
+  selectedCount?: number;
+  onDownloadSelected?: () => void;
+  isPreparingDownload?: boolean;
+  downloadError?: string | null;
 }
 
 /**
@@ -21,6 +31,13 @@ interface MediaLightboxProps {
  * while it loads, and offers the original only through the explicit download
  * button. Nothing here is served by our API: downloadUrl / streamUrl are
  * Cloudflare URLs (or API redirects to Cloudflare).
+ *
+ * Rendered through a portal into `document.body` on purpose: the pages that
+ * open it animate with `transform` (`.section-fade-in`) and use
+ * `backdrop-filter` (`.liquid-glass`), and both make an ancestor a containing
+ * block for `position: fixed`. Mounted inline, the overlay was sized and
+ * positioned against that ancestor instead of the viewport, which showed the
+ * page behind it and let the page scroll under the viewer.
  */
 export default function MediaLightbox({
   items,
@@ -29,6 +46,12 @@ export default function MediaLightbox({
   onNavigate,
   hasMore = false,
   onRequestMore,
+  isSelected = false,
+  onToggleSelected,
+  selectedCount = 0,
+  onDownloadSelected,
+  isPreparingDownload = false,
+  downloadError = null,
 }: MediaLightboxProps) {
   const total = items.length;
   const item = items[index] as GalleryMedia | undefined;
@@ -58,12 +81,39 @@ export default function MediaLightbox({
     onNavigate((index + 1) % total);
   };
 
-  // Lock page scroll while the viewer is open.
+  // Freeze the page behind the viewer.
+  //
+  // `overflow: hidden` alone is not enough: iOS Safari ignores it on the body
+  // and the gallery still scrolls under the photo. Pinning the body (keeping
+  // the scroll offset as a negative top) stops both, and restoring the offset
+  // on close puts the user back exactly where they were.
   useEffect(() => {
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    const { body } = document;
+    const scrollY = window.scrollY;
+    const previous = {
+      position: body.style.position,
+      top: body.style.top,
+      left: body.style.left,
+      right: body.style.right,
+      width: body.style.width,
+      overflow: body.style.overflow,
+    };
+
+    body.style.position = "fixed";
+    body.style.top = `-${scrollY}px`;
+    body.style.left = "0";
+    body.style.right = "0";
+    body.style.width = "100%";
+    body.style.overflow = "hidden";
+
     return () => {
-      document.body.style.overflow = previousOverflow;
+      body.style.position = previous.position;
+      body.style.top = previous.top;
+      body.style.left = previous.left;
+      body.style.right = previous.right;
+      body.style.width = previous.width;
+      body.style.overflow = previous.overflow;
+      window.scrollTo(0, scrollY);
     };
   }, []);
 
@@ -145,7 +195,7 @@ export default function MediaLightbox({
     else goNext();
   };
 
-  return (
+  const viewer = (
     <div
       ref={overlayRef}
       tabIndex={-1}
@@ -153,42 +203,86 @@ export default function MediaLightbox({
       aria-modal="true"
       aria-label={`${item.filename} — ${index + 1} of ${total}`}
       onClick={onClose}
-      className="fixed inset-0 z-[120] flex flex-col bg-black/95 backdrop-blur-lg outline-none select-none"
+      style={{ touchAction: "none" }}
+      className="fixed inset-0 z-[200] flex h-screen w-screen flex-col overflow-hidden overscroll-none bg-black/95 backdrop-blur-lg outline-none select-none"
     >
       {/* Header */}
       <div
         onClick={(event) => event.stopPropagation()}
-        className="flex items-center justify-between gap-3 border-b border-white/10 px-4 py-3 md:px-8 md:py-4"
+        className="flex shrink-0 items-center justify-between gap-3 border-b border-white/10 px-3 py-2 md:px-8 md:py-3"
       >
         <div className="min-w-0">
-          <p className="truncate text-sm font-bold uppercase tracking-widest text-white/90 md:text-base">
+          <p className="truncate text-xs font-bold uppercase tracking-widest text-white/90 md:text-sm">
             {item.filename}
           </p>
-          <p className="mt-0.5 text-xs font-semibold uppercase tracking-widest text-white/40">
+          <p className="mt-0.5 text-[10px] font-semibold uppercase tracking-widest text-white/40 md:text-xs">
             {item.type === "VIDEO" ? "Video" : "Photo"} · {index + 1} / {total}
           </p>
         </div>
 
         <div className="flex shrink-0 items-center gap-2">
+          {onToggleSelected && (
+            <button
+              type="button"
+              onClick={onToggleSelected}
+              aria-pressed={isSelected}
+              className={`flex items-center gap-2 rounded-full px-3 py-2 text-[11px] font-bold uppercase tracking-wider transition-colors md:text-xs ${
+                isSelected
+                  ? "bg-[#f0b405] text-[#00060e] hover:bg-[#f0b405]/90"
+                  : "bg-white/10 text-white hover:bg-white/20"
+              }`}
+            >
+              <Icon
+                icon={isSelected ? "lucide:check-circle-2" : "lucide:circle-plus"}
+                className="h-4 w-4"
+              />
+              <span className="hidden sm:inline">{isSelected ? "Selected" : "Select"}</span>
+            </button>
+          )}
+
+          {onDownloadSelected && selectedCount > 1 && (
+            <button
+              type="button"
+              onClick={onDownloadSelected}
+              disabled={isPreparingDownload}
+              className="flex items-center gap-2 rounded-full bg-[#f0b405] px-3 py-2 text-[11px] font-bold uppercase tracking-wider text-[#00060e] transition-colors hover:bg-[#f0b405]/90 disabled:opacity-60 md:text-xs"
+            >
+              {isPreparingDownload ? (
+                <Icon icon="lucide:loader-2" className="h-4 w-4 animate-spin" />
+              ) : (
+                <Icon icon="lucide:folder-down" className="h-4 w-4" />
+              )}
+              <span className="hidden sm:inline">Download {selectedCount}</span>
+              <span className="sm:hidden">{selectedCount}</span>
+            </button>
+          )}
+
           <a
             href={item.downloadUrl}
             download={item.filename}
             rel="noopener"
-            className="flex items-center gap-2 rounded-full bg-white/10 px-3 py-2 text-xs font-bold uppercase tracking-wider text-white transition-colors hover:bg-white/20 md:px-4 md:text-sm"
+            className="flex items-center gap-2 rounded-full bg-white/10 px-3 py-2 text-[11px] font-bold uppercase tracking-wider text-white transition-colors hover:bg-white/20 md:text-xs"
           >
             <Icon icon="lucide:download" className="h-4 w-4" />
             <span className="hidden sm:inline">Download</span>
           </a>
+
           <button
             type="button"
             onClick={onClose}
             aria-label="Close viewer"
-            className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-white/10 text-white transition-all duration-300 hover:rotate-90 hover:bg-white/20"
+            className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-white/10 text-white transition-all duration-300 hover:rotate-90 hover:bg-white/20 md:h-10 md:w-10"
           >
             <Icon icon="lucide:x" className="h-5 w-5" />
           </button>
         </div>
       </div>
+
+      {downloadError && (
+        <p className="shrink-0 border-b border-red-500/20 bg-red-500/10 px-4 py-2 text-center text-[11px] font-semibold uppercase tracking-wider text-red-200">
+          {downloadError}
+        </p>
+      )}
 
       {/* Media */}
       <div
@@ -196,7 +290,7 @@ export default function MediaLightbox({
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
         style={{ touchAction: "pan-y" }}
-        className="relative flex grow items-center justify-center overflow-hidden px-2 py-4 md:px-16"
+        className="relative flex min-h-0 grow items-center justify-center overflow-hidden px-2 py-3 md:px-16"
       >
         {item.type === "VIDEO" ? (
           item.streamUrl ? (
@@ -207,7 +301,7 @@ export default function MediaLightbox({
               preload="metadata"
               src={item.streamUrl}
               poster={item.posterUrl ?? undefined}
-              className="max-h-[80vh] max-w-full rounded-2xl border border-white/10 bg-black shadow-2xl"
+              className="max-h-full max-w-full rounded-2xl border border-white/10 bg-black shadow-2xl"
             />
           ) : (
             <div className="flex flex-col items-center gap-3 text-center">
@@ -251,7 +345,7 @@ export default function MediaLightbox({
                 decoding="async"
                 onLoad={() => setLoadedId(item.id)}
                 onError={handleImageError}
-                className={`max-h-[80vh] max-w-full rounded-2xl border border-white/10 object-contain shadow-2xl transition-opacity duration-300 ${
+                className={`max-h-full max-w-full rounded-2xl border border-white/10 object-contain shadow-2xl transition-opacity duration-300 ${
                   isLoaded ? "opacity-100" : "opacity-0"
                 }`}
               />
@@ -270,7 +364,7 @@ export default function MediaLightbox({
               type="button"
               onClick={goPrev}
               aria-label="Previous"
-              className="absolute left-1 z-10 flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border border-white/20 bg-black/60 text-white transition-transform hover:scale-110 hover:bg-black/80 md:left-4 md:h-14 md:w-14"
+              className="absolute left-1 z-10 flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-white/20 bg-black/60 text-white transition-transform hover:scale-110 hover:bg-black/80 md:left-4 md:h-14 md:w-14"
             >
               <Icon icon="lucide:chevron-left" className="h-7 w-7" />
             </button>
@@ -278,7 +372,7 @@ export default function MediaLightbox({
               type="button"
               onClick={goNext}
               aria-label="Next"
-              className="absolute right-1 z-10 flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border border-white/20 bg-black/60 text-white transition-transform hover:scale-110 hover:bg-black/80 md:right-4 md:h-14 md:w-14"
+              className="absolute right-1 z-10 flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-white/20 bg-black/60 text-white transition-transform hover:scale-110 hover:bg-black/80 md:right-4 md:h-14 md:w-14"
             >
               <Icon icon="lucide:chevron-right" className="h-7 w-7" />
             </button>
@@ -289,11 +383,16 @@ export default function MediaLightbox({
       {/* Footer */}
       <div
         onClick={(event) => event.stopPropagation()}
-        className="flex items-center justify-center gap-3 border-t border-white/10 px-4 py-3 md:py-4"
+        className="flex shrink-0 items-center justify-center gap-3 border-t border-white/10 px-4 py-2 md:py-3"
       >
-        <p className="text-xs font-bold uppercase tracking-widest text-white/50">
+        <p className="text-[11px] font-bold uppercase tracking-widest text-white/50">
           {index + 1} / {total}
         </p>
+        {selectedCount > 0 && (
+          <p className="text-[11px] font-bold uppercase tracking-widest text-[#f0b405]/90">
+            {selectedCount} selected
+          </p>
+        )}
         {hasMore && (
           <span className="text-[10px] font-semibold uppercase tracking-widest text-[#f0b405]/80">
             Loading more…
@@ -302,4 +401,6 @@ export default function MediaLightbox({
       </div>
     </div>
   );
+
+  return createPortal(viewer, document.body);
 }

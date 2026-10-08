@@ -16,6 +16,13 @@ const API_URL = import.meta.env.VITE_API_URL || "";
 
 export const galleryEndpoint = (path: string) => `${API_URL}/api${path}`;
 
+/**
+ * Items per ZIP download. Mirrors `MAX_ZIP_FILES` in the API: a bigger
+ * selection is one huge response, so the client stops the user before the
+ * server refuses.
+ */
+export const MAX_ZIP_SELECTION = 40;
+
 export class GalleryApiError extends Error {
   status: number;
 
@@ -91,4 +98,46 @@ export const fetchAlbumMedia = async (
   );
 
   return { data: body.data ?? [], nextCursor: body.nextCursor ?? null };
+};
+
+/**
+ * Downloads a selection as a single ZIP.
+ *
+ * One request instead of N downloads on purpose: browsers throttle or block
+ * bursts of downloads, and a ZIP keeps the originals' filenames.
+ */
+export const downloadSelectionZip = async (
+  ids: string[],
+  signal?: AbortSignal,
+): Promise<Blob> => {
+  let response: Response;
+  try {
+    response = await fetch(galleryEndpoint("/media/download-zip"), {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Accept: "application/zip" },
+      body: JSON.stringify({ ids }),
+      signal,
+    });
+  } catch (error) {
+    if ((error as Error).name === "AbortError") throw error;
+    throw new GalleryApiError(
+      `Could not reach the gallery API at ${galleryEndpoint("/media/download-zip")}. ` +
+        "Check VITE_API_URL, and that the API allows this origin (CLIENT_URL) - " +
+        "a cross-origin request the API does not allow fails exactly like this.",
+      0,
+    );
+  }
+
+  if (!response.ok) {
+    let message = `Download failed (${response.status})`;
+    try {
+      const body = (await response.json()) as { error?: string };
+      if (body?.error) message = body.error;
+    } catch {
+      // Non-JSON body (proxy/HTML) - keep the generic message.
+    }
+    throw new GalleryApiError(message, response.status);
+  }
+
+  return await response.blob();
 };
