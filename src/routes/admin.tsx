@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Header from "../components/blocks/Header";
 import SocialMediaFooter from "../components/blocks/Footer";
 import GlassyContainer from "../components/ui/GlassyContainer";
+import DownloadMetrics from "../components/admin/DownloadMetrics";
 import { Icon } from "@iconify/react";
 import { toast } from "react-toastify";
 
@@ -504,6 +505,12 @@ export default function AdminDashboard() {
                                     </div>
                                 )}
                             </GlassyContainer>
+
+                            {/* Gallery download metrics: how many files have been
+                                saved and which resources they were. */}
+                            <div className="mt-8">
+                                <DownloadMetrics onUnauthorized={handleLogout} />
+                            </div>
                         </div>
                     </div>
                 )}

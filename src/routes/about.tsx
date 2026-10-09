@@ -50,6 +50,12 @@ export default function About() {
       image:
         "https://pub-792299b5bd0346ff962308668cb1f98f.r2.dev/Hall%20of%20Fame/2025w.webp",
     },
+    {
+      year: "2026",
+      team: "First Love Church",
+      image:
+        "https://pub-792299b5bd0346ff962308668cb1f98f.r2.dev/Hall%20of%20Fame/ABK%202026%20FIRSTLOVE%20CHURCH%20DAG%20HEWARD-MILLS.jpg.jpeg",
+    },
   ];
 
   const gradientButtonStyle = {

@@ -203,7 +203,10 @@ export default function MediaGrid({ album }: { album: GalleryAlbum }) {
   const [downloadError, setDownloadError] = useState<string | null>(null);
   const sentinelRef = useRef<HTMLDivElement | null>(null);
 
-  const { items, isLoading, isLoadingMore, error, hasMore, loadMore, retry } = useInfiniteMedia(
+  // Pages load silently as the visitor scrolls (and ahead of them inside the
+  // viewer): there is deliberately no "loading more"/"load more" affordance on
+  // screen, only the sentinel below.
+  const { items, isLoading, error, hasMore, loadMore, retry } = useInfiniteMedia(
     album.slug,
     filter,
     36,
@@ -381,15 +384,6 @@ export default function MediaGrid({ album }: { album: GalleryAlbum }) {
             ))}
           </div>
 
-          {isLoadingMore && (
-            <div
-              className="mt-6 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-4"
-              aria-hidden="true"
-            >
-              <SkeletonTiles count={4} />
-            </div>
-          )}
-
           {error !== null && (
             <div className="mt-6 flex flex-col items-center gap-3 text-center">
               <p className="text-sm text-red-400/90">{error}</p>
@@ -398,25 +392,7 @@ export default function MediaGrid({ album }: { album: GalleryAlbum }) {
                 onClick={retry}
                 className="flex items-center gap-2 rounded-xl border border-white/15 bg-white/5 px-5 py-2.5 text-sm font-bold text-white transition-all hover:bg-white/10"
               >
-                <Icon icon="lucide:refresh-cw" className="h-4 w-4" /> Load more
-              </button>
-            </div>
-          )}
-
-          {hasMore && error === null && (
-            <div className="mt-6 flex justify-center">
-              <button
-                type="button"
-                onClick={loadMore}
-                disabled={isLoadingMore}
-                className="flex items-center gap-2 rounded-xl border border-white/15 bg-white/5 px-5 py-2.5 text-sm font-bold text-white/90 transition-all hover:bg-white/10 disabled:opacity-50"
-              >
-                {isLoadingMore ? (
-                  <Icon icon="lucide:loader-2" className="h-4 w-4 animate-spin" />
-                ) : (
-                  <Icon icon="lucide:chevron-down" className="h-4 w-4" />
-                )}
-                Load more
+                <Icon icon="lucide:refresh-cw" className="h-4 w-4" /> Try again
               </button>
             </div>
           )}

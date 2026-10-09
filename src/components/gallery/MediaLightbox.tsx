@@ -9,7 +9,11 @@ interface MediaLightboxProps {
   index: number;
   onClose: () => void;
   onNavigate: (nextIndex: number) => void;
-  /** More pages are available for this album. */
+  /**
+   * More pages are available for this album. Used only to fetch ahead
+   * silently: the next page is requested before the viewer reaches the end,
+   * and nothing about it is shown to the visitor.
+   */
   hasMore?: boolean;
   /** Asks the parent to fetch the next page (called before the user runs out). */
   onRequestMore?: () => void;
@@ -399,11 +403,6 @@ export default function MediaLightbox({
           <p className="text-[11px] font-bold uppercase tracking-widest text-[#f0b405]/90">
             {selectedCount} selected
           </p>
-        )}
-        {hasMore && (
-          <span className="text-[10px] font-semibold uppercase tracking-widest text-[#f0b405]/80">
-            Loading more…
-          </span>
         )}
       </div>
     </div>
