@@ -19,7 +19,6 @@ export default function Home() {
         <EventBannerSection />
         <TimelineSection />
         <MasonryGridSection />
-        {/* <ActionButtonsSection /> */}
         <PartnersSection />
       </main>
 

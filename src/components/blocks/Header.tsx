@@ -23,10 +23,6 @@ export default function Header() {
     navigate("/gallery");
     setIsMobileMenuOpen(false);
   };
-  // const navigateToMerch = () => {
-  //   navigate("/merch");
-  //   setIsMobileMenuOpen(false);
-  // };
   const navigateToVendors = () => {
     navigate("/vendors");
     setIsMobileMenuOpen(false);
@@ -38,7 +34,6 @@ export default function Header() {
     { label: "HOME", path: "/", action: navigateToHome },
     { label: "ABOUT", path: "/about", action: navigateToAbout },
     { label: "GALLERY", path: "/gallery", action: navigateToGallery },
-    // { label: "MERCH", path: "/merch", action: navigateToMerch },
     { label: "VENDORS", path: "/vendors", action: navigateToVendors },
     { label: "FAQS", path: "/faq", action: navigateToFAQ },
   ];

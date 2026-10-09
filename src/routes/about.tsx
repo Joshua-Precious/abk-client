@@ -1,11 +1,9 @@
 import { useState } from "react";
 import Header from "../components/blocks/Header";
 import Footer from "../components/blocks/Footer";
-import GallerySection from "../components/gallery/GallerySection";
 
 export default function About() {
   const [isHallOfFameOpen, setIsHallOfFameOpen] = useState(true);
-  const [isGalleryOpen, setIsGalleryOpen] = useState(true);
 
   const hallOfFameWinners = [
     {
@@ -52,7 +50,7 @@ export default function About() {
     },
     {
       year: "2026",
-      team: "First Love Church",
+      team: "Uptek Dance Academy",
       image:
         "https://pub-792299b5bd0346ff962308668cb1f98f.r2.dev/Hall%20of%20Fame/ABK%202026%20FIRSTLOVE%20CHURCH%20DAG%20HEWARD-MILLS.jpg.jpeg",
     },
@@ -68,10 +66,10 @@ export default function About() {
     <div className="flex flex-col min-h-screen text-neutral-content">
       <Header />
 
-      <main className="pt-20 md:pt-24 grow relative z-10 container mx-auto px-4 pb-20">
+      <main className="pt-28 md:pt-32 grow relative z-10 container mx-auto px-4 pb-20">
         {/* ABOUT Title */}
-        <div className="text-center mb-12 animate-fade-in">
-          <h1 className="text-6xl md:text-8xl font-bold text-[#f0b405] tracking-wider uppercase mb-2">
+        <div className="text-center mb-10 md:mb-12 animate-fade-in">
+          <h1 className="text-4xl md:text-6xl font-bold text-[#f0b405] tracking-wider uppercase mb-2">
             About ABK
           </h1>
         </div>
@@ -151,25 +149,6 @@ export default function About() {
                   </div>
                 ))}
             </div>
-          </div>
-        </section>
-
-        {/* GALLERY Tab/Button */}
-        <section className="flex flex-col items-center mb-16">
-          <button
-            onClick={() => setIsGalleryOpen(!isGalleryOpen)}
-            className="relative group px-12 py-4 rounded-xl font-extrabold text-2xl md:text-3xl text-white tracking-widest overflow-hidden transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] cursor-pointer inline-flex items-center justify-center min-w-70 md:min-w-[320px] shadow-[0_0_20px_rgba(255,255,255,0.05)]"
-            style={gradientButtonStyle}
-          >
-            GALLERY
-          </button>
-
-          {/* Album Gallery Content - data comes from the gallery API, media
-              itself streams from Cloudflare */}
-          <div
-            className={`w-full overflow-hidden transition-all duration-500 ease-in-out ${isGalleryOpen ? "max-h-[6000px] opacity-100 mt-10" : "max-h-0 opacity-0 pointer-events-none"}`}
-          >
-            <GallerySection />
           </div>
         </section>
 

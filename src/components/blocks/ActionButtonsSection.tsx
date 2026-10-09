@@ -1,15 +1,5 @@
-import { useNavigate } from "react-router";
-
 export default function ActionButtonsSection() {
-  const navigate = useNavigate();
-
   const buttons = [
-    {
-      label: "MERCH",
-      sublabel: "OF THE ROYALS",
-      action: () => navigate("/"),
-      bgClass: "bg-[#ff9900]",
-    },
     {
       label: "RULES",
       sublabel: "OF THE COMPETITION",
