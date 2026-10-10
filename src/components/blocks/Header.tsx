@@ -23,10 +23,6 @@ export default function Header() {
     navigate("/gallery");
     setIsMobileMenuOpen(false);
   };
-  const navigateToVendors = () => {
-    navigate("/vendors");
-    setIsMobileMenuOpen(false);
-  };
 
   const currentPage = location.pathname;
 
@@ -34,7 +30,6 @@ export default function Header() {
     { label: "HOME", path: "/", action: navigateToHome },
     { label: "ABOUT", path: "/about", action: navigateToAbout },
     { label: "GALLERY", path: "/gallery", action: navigateToGallery },
-    { label: "VENDORS", path: "/vendors", action: navigateToVendors },
     { label: "FAQS", path: "/faq", action: navigateToFAQ },
   ];
 

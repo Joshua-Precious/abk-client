@@ -89,7 +89,7 @@ export default function FAQ() {
     {
       question: "Can I sell at the event?",
       answer:
-        "Yes. Vendor slots start from GH₵500. Limited spaces. You can book a vendor slot via our website in the vendors section.",
+        "Yes. Vendor slots start from GH₵500. Limited spaces. Reach out to us on our socials to book a vendor slot.",
     },
     {
       question: "Can I record videos?",
