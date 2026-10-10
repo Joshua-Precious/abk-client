@@ -118,16 +118,26 @@ export default function About() {
           <div
             className={`w-full overflow-hidden transition-all duration-500 ease-in-out ${isHallOfFameOpen ? "max-h-[2000px] opacity-100 mt-10" : "max-h-0 opacity-0 pointer-events-none"}`}
           >
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 max-w-6xl mx-auto px-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 gap-y-12 pt-12 max-w-6xl mx-auto px-6 md:px-4">
               {hallOfFameWinners
                 .slice()
                 .reverse()
-                .map((winner) => (
+                .map((winner, index) => {
+                  const isCurrentChampion = index === 0;
+                  return (
                   <div
                     key={winner.year}
-                    className="group relative rounded-2xl overflow-hidden liquid-glass border border-white/10 p-4 transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_10px_30px_rgba(240,180,5,0.2)]"
+                    className={`group relative rounded-2xl liquid-glass border p-4 transition-all duration-300 hover:-translate-y-2 ${isCurrentChampion ? "overflow-visible border-[#f0b405]/70 shadow-[0_10px_40px_rgba(240,180,5,0.35)] ring-1 ring-[#f0b405]/50" : "overflow-hidden border-white/10 hover:shadow-[0_10px_30px_rgba(240,180,5,0.2)]"}`}
                   >
-                    <div className="relative aspect-square rounded-xl overflow-hidden mb-4 border border-white/10 bg-neutral/50">
+                    {isCurrentChampion && (
+                      <img
+                        src="/Crown.webp"
+                        alt="Reigning champion crown"
+                        className="absolute -top-12 md:-top-14 -left-8 md:-left-10 w-32 md:w-40 z-30 pointer-events-none -rotate-12 drop-shadow-[0_6px_12px_rgba(0,0,0,0.65)] transition-transform duration-300 group-hover:scale-110 group-hover:rotate-0"
+                        loading="eager"
+                      />
+                    )}
+                    <div className={`relative aspect-square rounded-xl overflow-hidden mb-4 border bg-neutral/50 ${isCurrentChampion ? "border-[#f0b405]/60" : "border-white/10"}`}>
                       <img
                         src={winner.image}
                         alt={`${winner.team} (${winner.year})`}
@@ -137,6 +147,11 @@ export default function About() {
                       <div className="absolute top-2 left-2 bg-[#f0b405] text-black font-extrabold px-3 py-1 rounded-md text-sm shadow-md">
                         {winner.year}
                       </div>
+                      {isCurrentChampion && (
+                        <div className="absolute top-2 right-2 bg-black/70 backdrop-blur-sm text-[#f0b405] font-extrabold px-3 py-1 rounded-md text-[11px] tracking-widest uppercase border border-[#f0b405]/60 shadow-md">
+                          Reigning
+                        </div>
+                      )}
                     </div>
                     <div className="text-center">
                       <h3 className="text-xl font-bold text-white tracking-wide uppercase group-hover:text-[#f0b405] transition-colors">
@@ -147,7 +162,8 @@ export default function About() {
                       </p>
                     </div>
                   </div>
-                ))}
+                  );
+                })}
             </div>
           </div>
         </section>
